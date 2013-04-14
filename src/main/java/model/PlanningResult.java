@@ -2,15 +2,13 @@ package model;
 
 import java.util.List;
 
-import edu.uci.ics.jung.graph.Edge;
-
 public class PlanningResult {
-    private List<Edge> path;
+    private List<WeightedEdge> path;
 
     /**
      * @return the path
      */
-    public List<Edge> getPath() {
+    public List<WeightedEdge> getPath() {
         return path;
     }
 
@@ -18,7 +16,7 @@ public class PlanningResult {
      * @param path
      *            the path to set
      */
-    public void setPath(List<Edge> path) {
+    public void setPath(List<WeightedEdge> path) {
         this.path = path;
     }
 

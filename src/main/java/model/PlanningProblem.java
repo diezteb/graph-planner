@@ -1,17 +1,16 @@
 package model;
 
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.Vertex;
 
 public class PlanningProblem {
-    private Graph graph;
+    private Graph<Vertex, WeightedEdge> graph;
     private Vertex startPoint;
     private Vertex endPoint;
 
     /**
      * @return the graph
      */
-    public Graph getGraph() {
+    public Graph<Vertex, WeightedEdge> getGraph() {
         return graph;
     }
 
@@ -19,7 +18,7 @@ public class PlanningProblem {
      * @param graph
      *            the graph to set
      */
-    public void setGraph(Graph graph) {
+    public void setGraph(Graph<Vertex, WeightedEdge> graph) {
         this.graph = graph;
     }
 

@@ -3,12 +3,22 @@ package measures;
 import model.PlanningResult;
 import model.PlanningStatistics;
 
-public interface Measure {
+public abstract class Measure {
 
-    public PlanningStatistics getStatistics();
+    public PlanningStatistics getStatistics() {
+        PlanningStatistics statistics = new PlanningStatistics();
+        statistics.add(getType(), getValue());
+        return statistics;
+    }
 
-    public void initialize();
+    public void initialize() {
+    }
 
-    public void finalize(PlanningResult planningResult);
+    public void finalize(PlanningResult planningResult) {
+    }
+
+    protected abstract double getValue();
+
+    protected abstract MeasureType getType();
 
 }
