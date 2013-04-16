@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:tns="http://agh.edu.pl/ztis/planning" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:gexf="http://www.gexf.net/format/graph"
+                  name="GraphPlanningService"
+                  targetNamespace="http://agh.edu.pl/ztis/planning">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://agh.edu.pl/ztis/planning"
+                   elementFormDefault="unqualified" targetNamespace="http://agh.edu.pl/ztis/planning" version="1.0">
+            <xs:import namespace="http://www.gexf.net/format/graph" schemaLocation="xsd/gexf.xsd"/>
+            <xs:element name="planning-task" type="tns:planning-task"/>
+            <xs:element name="planning-task-response" type="tns:planning-task-response"/>
+            <xs:complexType name="planning-task">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="graph" type="gexf:gexf-content"/>
+                    <xs:element minOccurs="0" name="start-node" type="xs:string"/>
+                    <xs:element minOccurs="0" name="end-node" type="xs:string"/>
+                    <xs:element minOccurs="0" name="algorithm" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="planning-task-response">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+
+    <wsdl:message name="planning-task">
+        <wsdl:part element="tns:planning-task" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="planning-task-response">
+        <wsdl:part element="tns:planning-task-response" name="parameters"/>
+    </wsdl:message>
+
+    <wsdl:portType name="PlanningService">
+        <wsdl:operation name="schedule-planning">
+            <wsdl:input message="tns:planning-task" name="planning-task"/>
+            <wsdl:output message="tns:planning-task-response" name="planning-task-response"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="GraphPlanningServiceSoapBinding" type="tns:PlanningService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="schedule-planning">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="planning-task">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="planning-task-response">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+</wsdl:definitions>
