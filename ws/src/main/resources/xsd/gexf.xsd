@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.gexf.net/format/graph" xmlns:ns1="http://www.gexf.net/format/graph" xmlns:viz="http://www.gexf.net/format/graph/viz">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.gexf.net/1.2draft" xmlns:ns1="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz">
   <xs:include schemaLocation="data.xsd"/>
   <xs:include schemaLocation="dynamics.xsd"/>
   <xs:include schemaLocation="hierarchy.xsd"/>
   <xs:include schemaLocation="phylogenics.xsd"/>
-  <xs:import namespace="http://www.gexf.net/format/graph/viz" schemaLocation="viz.xsd"/>
+  <xs:import namespace="http://www.gexf.net/1.2draft/viz" schemaLocation="viz.xsd"/>
   <xs:element name="gexf" type="ns1:gexf-content"/>
   <xs:complexType name="gexf-content">
     <xs:annotation>

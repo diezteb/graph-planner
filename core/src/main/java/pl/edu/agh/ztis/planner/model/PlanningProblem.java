@@ -7,19 +7,17 @@ public class PlanningProblem {
     private Vertex startPoint;
     private Vertex endPoint;
 
+    public PlanningProblem(Graph<Vertex, WeightedEdge> graph, Vertex startPoint, Vertex endPoint) {
+        this.graph = graph;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+
     /**
      * @return the graph
      */
     public Graph<Vertex, WeightedEdge> getGraph() {
         return graph;
-    }
-
-    /**
-     * @param graph
-     *            the graph to set
-     */
-    public void setGraph(Graph<Vertex, WeightedEdge> graph) {
-        this.graph = graph;
     }
 
     /**
@@ -30,25 +28,10 @@ public class PlanningProblem {
     }
 
     /**
-     * @param startPoint
-     *            the startPoint to set
-     */
-    public void setStartPoint(Vertex startPoint) {
-        this.startPoint = startPoint;
-    }
-
-    /**
      * @return the endPoint
      */
     public Vertex getEndPoint() {
         return endPoint;
     }
 
-    /**
-     * @param endPoint
-     *            the endPoint to set
-     */
-    public void setEndPoint(Vertex endPoint) {
-        this.endPoint = endPoint;
-    }
 }

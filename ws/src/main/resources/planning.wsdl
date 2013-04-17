@@ -1,27 +1,32 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:tns="http://agh.edu.pl/ztis/planning" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  xmlns:gexf="http://www.gexf.net/format/graph"
+                  xmlns:tns="http://agh.edu.pl/ztis/planner/ws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:gexf="http://www.gexf.net/1.2draft"
                   name="GraphPlanningService"
-                  targetNamespace="http://agh.edu.pl/ztis/planning">
+                  targetNamespace="http://agh.edu.pl/ztis/planner/ws">
     <wsdl:types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://agh.edu.pl/ztis/planning"
-                   elementFormDefault="unqualified" targetNamespace="http://agh.edu.pl/ztis/planning" version="1.0">
-            <xs:import namespace="http://www.gexf.net/format/graph" schemaLocation="xsd/gexf.xsd"/>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://agh.edu.pl/ztis/planner/ws"
+                   elementFormDefault="unqualified" targetNamespace="http://agh.edu.pl/ztis/planner/ws" version="1.0">
+            <xs:import namespace="http://www.gexf.net/1.2draft" schemaLocation="xsd/gexf.xsd"/>
             <xs:element name="planning-task" type="tns:planning-task"/>
             <xs:element name="planning-task-response" type="tns:planning-task-response"/>
+            <xs:simpleType name="planning-algorithm">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="BFS"/>
+                    <xs:enumeration value="Dijkstra"/>
+                    <xs:enumeration value="Prim"/>
+                </xs:restriction>
+            </xs:simpleType>
             <xs:complexType name="planning-task">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="graph" type="gexf:gexf-content"/>
-                    <xs:element minOccurs="0" name="start-node" type="xs:string"/>
-                    <xs:element minOccurs="0" name="end-node" type="xs:string"/>
-                    <xs:element minOccurs="0" name="algorithm" type="xs:string"/>
+                    <xs:element minOccurs="0" name="algorithm" type="tns:planning-algorithm"/>
                 </xs:sequence>
             </xs:complexType>
 
             <xs:complexType name="planning-task-response">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                    <xs:element minOccurs="0" name="status" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
         </xs:schema>
@@ -34,14 +39,14 @@
         <wsdl:part element="tns:planning-task-response" name="parameters"/>
     </wsdl:message>
 
-    <wsdl:portType name="PlanningService">
+    <wsdl:portType name="GraphPlanningPortType">
         <wsdl:operation name="schedule-planning">
             <wsdl:input message="tns:planning-task" name="planning-task"/>
             <wsdl:output message="tns:planning-task-response" name="planning-task-response"/>
         </wsdl:operation>
     </wsdl:portType>
 
-    <wsdl:binding name="GraphPlanningServiceSoapBinding" type="tns:PlanningService">
+    <wsdl:binding name="GraphPlanningSoapBinding" type="tns:GraphPlanningPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="schedule-planning">
             <soap:operation soapAction="" style="document"/>
@@ -53,5 +58,10 @@
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
+
+    <wsdl:service name="GraphPlanningService">
+        <wsdl:port binding="tns:GraphPlanningSoapBinding" name="GraphPlanningServicePort">
+        </wsdl:port>
+    </wsdl:service>
 
 </wsdl:definitions>

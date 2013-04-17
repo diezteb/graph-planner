@@ -2,6 +2,7 @@ package pl.edu.agh.ztis.planner.planners;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
 import pl.edu.agh.ztis.planner.model.PlanningProblem;
 import pl.edu.agh.ztis.planner.model.PlanningResult;
 import pl.edu.agh.ztis.planner.model.Vertex;
@@ -13,6 +14,7 @@ import edu.uci.ics.jung.algorithms.shortestpath.PrimMinimumSpanningTree;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
 
+@Component("Prim")
 public class PrimPlanner implements Planner {
 
     @Override
