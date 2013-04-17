@@ -11,12 +11,8 @@ import pl.edu.agh.ztis.planner.ws.PlanningTask;
 import pl.edu.agh.ztis.planner.ws.PlanningTaskResponse;
 
 import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 @Component
-@WebService(targetNamespace = "http://agh.edu.pl/ztis/planner/ws", name = "GraphPlanningPortType")
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class PlanningServiceImpl implements GraphPlanningPortType {
 
     @Autowired

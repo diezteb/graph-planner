@@ -46,7 +46,7 @@
         </wsdl:operation>
     </wsdl:portType>
 
-    <wsdl:binding name="GraphPlanningSoapBinding" type="tns:GraphPlanningPortType">
+    <wsdl:binding name="GraphPlanningPortTypeSoapBinding" type="tns:GraphPlanningPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="schedule-planning">
             <soap:operation soapAction="" style="document"/>
@@ -59,8 +59,8 @@
         </wsdl:operation>
     </wsdl:binding>
 
-    <wsdl:service name="GraphPlanningService">
-        <wsdl:port binding="tns:GraphPlanningSoapBinding" name="GraphPlanningServicePort">
+    <wsdl:service name="GraphPlanningPortTypeService">
+        <wsdl:port binding="tns:GraphPlanningPortTypeSoapBinding" name="GraphPlanningServicePort">
         </wsdl:port>
     </wsdl:service>
 
