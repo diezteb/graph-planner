@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+
 import pl.edu.agh.ztis.planner.model.PlanningProblem;
 import pl.edu.agh.ztis.planner.model.PlanningResult;
 import pl.edu.agh.ztis.planner.model.Vertex;
 import pl.edu.agh.ztis.planner.model.WeightedEdge;
 import edu.uci.ics.jung.algorithms.shortestpath.BFSDistanceLabeler;
 import edu.uci.ics.jung.graph.Graph;
-import pl.edu.agh.ztis.planner.ws.PlanningAlgorithm;
-
-import static pl.edu.agh.ztis.planner.ws.PlanningAlgorithm.BFS;
 
 @Component("BFS")
 public class BFSPlanner implements Planner {
