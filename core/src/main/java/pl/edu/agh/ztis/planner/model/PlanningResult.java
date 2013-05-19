@@ -5,19 +5,12 @@ import java.util.List;
 public class PlanningResult {
     private List<WeightedEdge> path;
 
-    /**
-     * @return the path
-     */
-    public List<WeightedEdge> getPath() {
-        return path;
+    public PlanningResult(List<WeightedEdge> path) {
+        this.path = path;
     }
 
-    /**
-     * @param path
-     *            the path to set
-     */
-    public void setPath(List<WeightedEdge> path) {
-        this.path = path;
+    public List<WeightedEdge> getPath() {
+        return path;
     }
 
 }

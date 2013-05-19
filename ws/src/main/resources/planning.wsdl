@@ -12,8 +12,12 @@
             <xs:element name="planning-task-response" type="tns:planning-task-response"/>
             <xs:simpleType name="planning-algorithm">
                 <xs:restriction base="xs:string">
+                    <xs:enumeration value="AStar"/>
+                    <xs:enumeration value="BellmanFord"/>
                     <xs:enumeration value="BFS"/>
                     <xs:enumeration value="Dijkstra"/>
+                    <xs:enumeration value="FloydWarshall"/>
+                    <xs:enumeration value="Kruskal"/>
                     <xs:enumeration value="Prim"/>
                 </xs:restriction>
             </xs:simpleType>

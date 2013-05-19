@@ -6,6 +6,13 @@
 
     <context:property-placeholder location="classpath*:*.properties"/>
 
-    <context:component-scan base-package="pl.edu.agh.ztis.planner"/>
+    <context:component-scan base-package="pl.edu.agh.ztis.planner">
+        <context:exclude-filter type="regex" expression="pl.edu.agh.ztis.planner.planners.*"/>
+    </context:component-scan>
+
+    <context:component-scan base-package="pl.edu.agh.ztis.planner.planners"
+                            name-generator="pl.edu.agh.ztis.planner.planners.discovery.PlannerBeanNameGenerator" use-default-filters="false">
+        <context:include-filter type="annotation" expression="pl.edu.agh.ztis.planner.planners.discovery.PlannerComponent"/>
+    </context:component-scan>
 
 </beans>
