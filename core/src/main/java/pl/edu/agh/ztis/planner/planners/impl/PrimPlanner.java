@@ -19,7 +19,7 @@ import java.util.List;
 public class PrimPlanner implements Planner<Graph<Vertex, WeightedEdge>> {
 
     @Override
-    public PlanningResult executePlanning(PlanningProblem<Graph<Vertex, WeightedEdge>> problem) {
+    public PlanningResult executePlanning(PlanningProblem<? extends Graph<Vertex, WeightedEdge>> problem) {
         PrimMinimumSpanningTree<Vertex, WeightedEdge> prim = new PrimMinimumSpanningTree<>(
                 new Factory<Graph<Vertex, WeightedEdge>>() {
                     @Override

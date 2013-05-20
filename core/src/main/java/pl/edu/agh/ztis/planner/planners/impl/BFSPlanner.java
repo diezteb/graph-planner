@@ -18,7 +18,7 @@ import java.util.List;
 public class BFSPlanner implements Planner<Graph<Vertex, WeightedEdge>> {
 
     @Override
-    public PlanningResult executePlanning(PlanningProblem<Graph<Vertex, WeightedEdge>> problem) {
+    public PlanningResult executePlanning(PlanningProblem<? extends  Graph<Vertex, WeightedEdge>> problem) {
         BFSDistanceLabeler<Vertex, WeightedEdge> bfs = new BFSDistanceLabeler<>();
         bfs.labelDistances(problem.getGraph(), problem.getStartPoint());
         return new PlanningResult(backtracePath(bfs, problem.getStartPoint(), problem.getEndPoint(), problem.getGraph()));

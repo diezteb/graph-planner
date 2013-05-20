@@ -9,9 +9,9 @@ import java.util.concurrent.Callable;
 public class PlanningJob<T> implements Callable<PlanningResult> {
 
     private Planner<T> planner;
-    private PlanningProblem<T> problem;
+    private PlanningProblem<? extends T> problem;
 
-    public PlanningJob(Planner<T> planner, PlanningProblem<T> problem) {
+    public PlanningJob(Planner<T> planner, PlanningProblem<? extends T> problem) {
         this.planner = planner;
         this.problem = problem;
     }

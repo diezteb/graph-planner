@@ -1,21 +1,18 @@
 package pl.edu.agh.ztis.planner.planners.impl;
 
 import aima.core.environment.map.Map;
-import aima.core.environment.map.StraightLineDistanceHeuristicFunction;
 import aima.core.search.framework.GraphSearch;
 import aima.core.search.framework.Search;
-import aima.core.search.informed.AStarSearch;
+import aima.core.search.uninformed.DepthFirstSearch;
 import pl.edu.agh.ztis.planner.model.PlanningProblem;
 import pl.edu.agh.ztis.planner.planners.discovery.PlannerComponent;
 import pl.edu.agh.ztis.planner.ws.PlanningAlgorithm;
 
-@PlannerComponent(algorithm = PlanningAlgorithm.A_STAR)
-public class AStarPlanner extends AimaPlanner {
+@PlannerComponent(algorithm = PlanningAlgorithm.DFS)
+public class DFSPlanner extends AimaPlanner {
 
     @Override
     protected Search createSearch(PlanningProblem<? extends Map> planningProblem) {
-        return new AStarSearch(new GraphSearch(),
-                new StraightLineDistanceHeuristicFunction(
-                        planningProblem.getEndPoint().getId(), planningProblem.getGraph()));
+        return new DepthFirstSearch(new GraphSearch());
     }
 }

@@ -9,17 +9,17 @@ import pl.edu.agh.ztis.planner.planners.Planner;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class PlanningJobCreator<T> {
+public abstract class PlanningJobCreator<T> {
 
     @SuppressWarnings("unchecked")
-    PlanningJob<T> createPlanningJob(Planner<?> planner, GraphContent graph) {
+    public PlanningJob<? extends T> createPlanningJob(Planner<?> planner, GraphContent graph) {
         List<NodeContent> nodes = filterNodes(graph.getAttributesOrNodesOrEdges());
         List<EdgeContent> edges = filterEdges(graph.getAttributesOrNodesOrEdges());
 
         return new PlanningJob<>((Planner<T>) planner, createPlanningProblem(nodes, edges, graph.getStart(), graph.getEnd()));
     }
 
-    protected abstract PlanningProblem<T> createPlanningProblem(List<NodeContent> nodes, List<EdgeContent> edges, String startNode, String endNode);
+    protected abstract PlanningProblem<? extends T> createPlanningProblem(List<NodeContent> nodes, List<EdgeContent> edges, String startNode, String endNode);
 
     abstract GraphType graphType();
 

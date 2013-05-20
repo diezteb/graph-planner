@@ -15,10 +15,13 @@
                     <xs:enumeration value="AStar"/>
                     <xs:enumeration value="BellmanFord"/>
                     <xs:enumeration value="BFS"/>
+                    <xs:enumeration value="DFS"/>
                     <xs:enumeration value="Dijkstra"/>
                     <xs:enumeration value="FloydWarshall"/>
+                    <xs:enumeration value="GreedyBestFirst"/>
                     <xs:enumeration value="Kruskal"/>
                     <xs:enumeration value="Prim"/>
+                    <xs:enumeration value="UniformCost"/>
                 </xs:restriction>
             </xs:simpleType>
             <xs:complexType name="planning-task">

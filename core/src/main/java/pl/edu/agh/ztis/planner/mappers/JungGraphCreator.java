@@ -28,7 +28,9 @@ public class JungGraphCreator extends PlanningJobCreator<Graph<Vertex, WeightedE
             jungGraph.addVertex(vertex);
         }
         for (EdgeContent edge : edges) {
-            jungGraph.addEdge(new WeightedEdge(), vertexMap.get(edge.getSource()), vertexMap.get(edge.getTarget()));
+            Vertex start = vertexMap.get(edge.getSource());
+            Vertex end = vertexMap.get(edge.getTarget());
+            jungGraph.addEdge(new WeightedEdge(start, end, edge.getWeight()), start, end);
         }
 
         return new PlanningProblem<>(

@@ -1,4 +1,4 @@
-import net.gexf.format.graph.*;
+import net.gexf.format.graph.GexfContent;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import pl.edu.agh.ztis.planner.planners.impl.GraphHelper;
 import pl.edu.agh.ztis.planner.service.ServicePublisher;
 import pl.edu.agh.ztis.planner.ws.GraphPlanningPortType;
 import pl.edu.agh.ztis.planner.ws.PlanningAlgorithm;
@@ -41,20 +42,10 @@ public class ServiceTest {
         PlanningTaskResponse planningTaskResponse = client.schedulePlanning(new PlanningTask()
                 .withAlgorithm(PlanningAlgorithm.DIJKSTRA)
                 .withGraph(new GexfContent()
-                        .withGraph(new GraphContent()
-                                .withAttributesOrNodesOrEdges(new NodesContent()
-                                        .withNode(new NodeContent().withId("1"))
-                                        .withNode(new NodeContent().withId("2"))
-                                ).withAttributesOrNodesOrEdges(new EdgesContent()
-                                        .withEdge(new EdgeContent()
-                                                .withSource("1")
-                                                .withTarget("2")
-                                        )
-                                ).withStart("1")
-                                .withEnd("2")
-                        )
+                        .withGraph(GraphHelper.createGraph())
                 )
         );
+
         assertEquals("Planning task scheduled for execution", planningTaskResponse.getStatus());
     }
 
