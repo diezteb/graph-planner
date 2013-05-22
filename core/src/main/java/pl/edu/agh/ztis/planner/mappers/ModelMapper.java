@@ -35,7 +35,7 @@ public class ModelMapper {
     }
 
     private void validateProblem(GraphContent graph, Planner<?> planner) {
-        if ((graph.getDefaultedgetype().equals(DIRECTED) && !planner.supportsDirectedGraph()) || (isWeightedGraph(graph) && !planner.supportsWeightedGraph())) {
+        if ((DIRECTED.equals(graph.getDefaultedgetype()) && !planner.supportsDirectedGraph()) || (isWeightedGraph(graph) && !planner.supportsWeightedGraph())) {
             throw new IllegalArgumentException("Graph type unsupported by chosen algorithm");
         }
     }

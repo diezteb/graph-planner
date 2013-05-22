@@ -13,6 +13,7 @@ import java.util.List;
 public class GraphHelper {
     public static GraphContent createGraph() {
         return new GraphContent()
+                .withDefaultedgetype(DefaultedgetypeType.DIRECTED)
                 .withAttributesOrNodesOrEdges(new NodesContent()
                         .withNode(new NodeContent().withId("1"))
                         .withNode(new NodeContent().withId("2"))
