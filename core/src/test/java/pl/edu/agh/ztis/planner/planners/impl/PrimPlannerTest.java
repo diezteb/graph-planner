@@ -8,17 +8,17 @@ import pl.edu.agh.ztis.planner.model.WeightedEdge;
 import java.util.List;
 
 import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.findShortestPath;
-import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.shortestPathForDirectedAndWeighted;
+import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.shortestPathForUndirectedWeighted;
 
-public class DijkstraPlannerTest {
+public class PrimPlannerTest {
 
     @Test
     public void shouldFindShortestPath() {
         JungGraphCreator graphCreator = new JungGraphCreator();
-        DijkstraPlanner tested = new DijkstraPlanner();
+        PrimPlanner tested = new PrimPlanner();
 
         List<WeightedEdge> foundPath = findShortestPath(tested, graphCreator);
-        Assertions.assertThat(foundPath).containsExactly(shortestPathForDirectedAndWeighted());
+        Assertions.assertThat(foundPath).containsExactly(shortestPathForUndirectedWeighted());
     }
 
 }

@@ -8,16 +8,16 @@ import pl.edu.agh.ztis.planner.model.WeightedEdge;
 import java.util.List;
 
 import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.findShortestPath;
-import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.shortestPathForDirectedAndWeighted;
+import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.shortestPathForUndirectedWeighted;
 
-public class FloydWarshallPlannerTest {
+public class KruskalPlannerTest {
 
     @Test
     public void shouldFindShortestPath() {
         JGraphTGraphCreator graphCreator = new JGraphTGraphCreator();
-        FloydWarshallPlanner tested = new FloydWarshallPlanner();
+        KruskalPlanner tested = new KruskalPlanner();
 
         List<WeightedEdge> foundPath = findShortestPath(tested, graphCreator);
-        Assertions.assertThat(foundPath).containsExactly(shortestPathForDirectedAndWeighted());
+        Assertions.assertThat(foundPath).containsExactly(shortestPathForUndirectedWeighted());
     }
 }

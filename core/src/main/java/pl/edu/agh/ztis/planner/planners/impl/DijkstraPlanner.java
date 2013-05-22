@@ -33,4 +33,14 @@ public class DijkstraPlanner implements Planner<Graph<Vertex, WeightedEdge>> {
     public GraphType graphType() {
         return GraphType.JUNG;
     }
+
+    @Override
+    public boolean supportsWeightedGraph() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsDirectedGraph() {
+        return true;
+    }
 }

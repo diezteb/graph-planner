@@ -8,7 +8,7 @@ import pl.edu.agh.ztis.planner.model.WeightedEdge;
 import java.util.List;
 
 import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.findShortestPath;
-import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.shortestPath;
+import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.shortestPathForDirectedAndWeighted;
 
 public class DFSPlannerTest {
 
@@ -18,7 +18,7 @@ public class DFSPlannerTest {
         DFSPlanner tested = new DFSPlanner();
 
         List<WeightedEdge> foundPath = findShortestPath(tested, graphCreator);
-        Assertions.assertThat(foundPath).containsExactly(shortestPath());
+        Assertions.assertThat(foundPath).containsExactly(shortestPathForDirectedAndWeighted());
     }
 
 }

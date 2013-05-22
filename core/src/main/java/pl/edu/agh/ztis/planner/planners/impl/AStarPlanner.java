@@ -18,4 +18,14 @@ public class AStarPlanner extends AimaPlanner {
                 new StraightLineDistanceHeuristicFunction(
                         planningProblem.getEndPoint().getId(), planningProblem.getGraph()));
     }
+
+    @Override
+    public boolean supportsWeightedGraph() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsDirectedGraph() {
+        return true;
+    }
 }

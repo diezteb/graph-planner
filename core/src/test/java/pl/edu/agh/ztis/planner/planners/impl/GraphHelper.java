@@ -1,7 +1,6 @@
 package pl.edu.agh.ztis.planner.planners.impl;
 
 import net.gexf.format.graph.*;
-import org.fest.assertions.Assertions;
 import pl.edu.agh.ztis.planner.executors.task.PlanningJob;
 import pl.edu.agh.ztis.planner.mappers.PlanningJobCreator;
 import pl.edu.agh.ztis.planner.model.PlanningResult;
@@ -38,6 +37,7 @@ public class GraphHelper {
                         .withEdge(edge(7, 9, 1))
                         .withEdge(edge(7, 10, 1))
                         .withEdge(edge(4, 10, 5))
+                        .withEdge(edge(10, 1, 0))
                 ).withStart("1")
                 .withEnd("10");
     }
@@ -54,13 +54,27 @@ public class GraphHelper {
     }
 
 
-    public static WeightedEdge[] shortestPath() {
+    public static WeightedEdge[] shortestPathForDirectedAndWeighted() {
         return new WeightedEdge[]{
                 edge("1", "2"),
                 edge("2", "5"),
                 edge("5", "8"),
                 edge("8", "7"),
                 edge("7", "10")
+        };
+    }
+
+    public static WeightedEdge[] shortestPathForDirectedUnweighted() {
+        return new WeightedEdge[]{
+                edge("1", "2"),
+                edge("2", "4"),
+                edge("4", "10")
+        };
+    }
+
+    public static WeightedEdge[] shortestPathForUndirectedWeighted() {
+        return new WeightedEdge[]{
+                edge("10", "1")
         };
     }
 

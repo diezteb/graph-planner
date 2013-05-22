@@ -18,4 +18,14 @@ public class FloydWarshallPlanner extends JGraphTPlanner {
         FloydWarshallShortestPaths<Vertex, JGraphTEdge> algorithm = new FloydWarshallShortestPaths<>(problem.getGraph());
         return algorithm.getShortestPath(problem.getStartPoint(), problem.getEndPoint()).getEdgeList();
     }
+
+    @Override
+    public boolean supportsWeightedGraph() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsDirectedGraph() {
+        return true;
+    }
 }

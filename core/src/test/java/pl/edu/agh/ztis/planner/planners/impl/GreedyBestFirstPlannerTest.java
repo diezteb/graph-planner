@@ -8,16 +8,17 @@ import pl.edu.agh.ztis.planner.model.WeightedEdge;
 import java.util.List;
 
 import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.findShortestPath;
-import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.shortestPathForDirectedAndWeighted;
+import static pl.edu.agh.ztis.planner.planners.impl.GraphHelper.shortestPathForDirectedUnweighted;
 
-public class UniformCostPlannerTest {
+public class GreedyBestFirstPlannerTest {
 
     @Test
-    public void shouldFindShortestPath() {
+    public void shouldFindShortestPath() throws Exception {
         AimaGraphCreator graphCreator = new AimaGraphCreator();
-        UniformCostPlanner tested = new UniformCostPlanner();
+        GreedyBestFirstPlanner tested = new GreedyBestFirstPlanner();
 
         List<WeightedEdge> foundPath = findShortestPath(tested, graphCreator);
-        Assertions.assertThat(foundPath).containsExactly(shortestPathForDirectedAndWeighted());
+        Assertions.assertThat(foundPath).containsExactly(shortestPathForDirectedUnweighted());
     }
+
 }

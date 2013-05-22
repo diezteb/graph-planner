@@ -18,4 +18,13 @@ public class BellmanFordPlanner extends JGraphTPlanner {
         return BellmanFordShortestPath.findPathBetween(problem.getGraph(), problem.getStartPoint(), problem.getEndPoint());
     }
 
+    @Override
+    public boolean supportsWeightedGraph() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsDirectedGraph() {
+        return true;
+    }
 }

@@ -1,55 +1,47 @@
 package pl.edu.agh.ztis.planner.planners.impl;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
 import org.jgrapht.Graph;
+import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
+import org.jgrapht.graph.ClassBasedEdgeFactory;
+import org.jgrapht.graph.SimpleGraph;
 import pl.edu.agh.ztis.planner.mappers.JGraphTEdge;
 import pl.edu.agh.ztis.planner.model.PlanningProblem;
-import pl.edu.agh.ztis.planner.model.PlanningResult;
 import pl.edu.agh.ztis.planner.model.Vertex;
-import pl.edu.agh.ztis.planner.model.WeightedEdge;
-import pl.edu.agh.ztis.planner.planners.GraphType;
-import pl.edu.agh.ztis.planner.planners.Planner;
 import pl.edu.agh.ztis.planner.planners.discovery.PlannerComponent;
 import pl.edu.agh.ztis.planner.ws.PlanningAlgorithm;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @PlannerComponent(algorithm = PlanningAlgorithm.KRUSKAL)
-public class KruskalPlanner implements Planner<Graph<Vertex, JGraphTEdge>> {
+public class KruskalPlanner extends JGraphTPlanner {
 
     @Override
-    public PlanningResult executePlanning(PlanningProblem<? extends Graph<Vertex, JGraphTEdge>> problem) {
+    protected List<JGraphTEdge> findPath(PlanningProblem<? extends Graph<Vertex, JGraphTEdge>> problem) {
         KruskalMinimumSpanningTree<Vertex, JGraphTEdge> kruskalMinimumSpanningTree = new KruskalMinimumSpanningTree<>(problem.getGraph());
-
-        List<WeightedEdge> path = findPath(problem, kruskalMinimumSpanningTree.getEdgeSet());
-        return new PlanningResult(path);
+        Graph<Vertex, JGraphTEdge> mst = createGraph(kruskalMinimumSpanningTree.getEdgeSet());
+        DijkstraShortestPath<Vertex, JGraphTEdge> dijkstra = new DijkstraShortestPath<>(mst, problem.getStartPoint(), problem.getEndPoint());
+        return dijkstra.getPathEdgeList();
     }
 
-    private List<WeightedEdge> findPath(PlanningProblem<? extends Graph<Vertex, JGraphTEdge>> problem, Set<JGraphTEdge> edgeSet) {
-        Map<Vertex, JGraphTEdge> endVertexToEdgeMap = Maps.uniqueIndex(edgeSet, new Function<JGraphTEdge, Vertex>() {
-            @Override
-            public Vertex apply(JGraphTEdge edge) {
-                return edge.getEnd();
-            }
-        });
-        Vertex nextPoint = problem.getEndPoint();
-        List<WeightedEdge> path = new ArrayList<>();
-        Vertex startPoint = problem.getStartPoint();
-        while (!nextPoint.equals(startPoint)) {
-            JGraphTEdge edge = endVertexToEdgeMap.get(nextPoint);
-            nextPoint = edge.getStart();
-            path.add(new WeightedEdge(edge.getStart(), edge.getEnd(), edge.getWeight()));
+    private Graph<Vertex, JGraphTEdge> createGraph(Set<JGraphTEdge> edges) {
+        Graph<Vertex, JGraphTEdge> graph = new SimpleGraph<>(new ClassBasedEdgeFactory<Vertex, JGraphTEdge>(JGraphTEdge.class));
+        for (JGraphTEdge edge : edges) {
+            graph.addVertex(edge.getStart());
+            graph.addVertex(edge.getEnd());
+            graph.addEdge(edge.getStart(), edge.getEnd(), edge);
         }
-        return path;
+        return graph;
     }
 
     @Override
-    public GraphType graphType() {
-        return GraphType.JGRAPHT;
+    public boolean supportsWeightedGraph() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsDirectedGraph() {
+        return false;
     }
 }

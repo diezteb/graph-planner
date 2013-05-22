@@ -97,11 +97,6 @@
             <version>1.0.11</version>
         </dependency>
         <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-graph</artifactId>
-            <version>2.6.5</version>
-        </dependency>
-        <dependency>
             <groupId>net.sf.jgrapht</groupId>
             <artifactId>jgrapht</artifactId>
             <version>0.8.3</version>
@@ -110,6 +105,11 @@
             <groupId>com.googlecode.aima-java</groupId>
             <artifactId>aima-core</artifactId>
             <version>0.10.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>13.0.1</version>
         </dependency>
 
         <!--test-->

@@ -15,4 +15,14 @@ public class DFSPlanner extends AimaPlanner {
     protected Search createSearch(PlanningProblem<? extends Map> planningProblem) {
         return new DepthFirstSearch(new GraphSearch());
     }
+
+    @Override
+    public boolean supportsWeightedGraph() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsDirectedGraph() {
+        return false;
+    }
 }
