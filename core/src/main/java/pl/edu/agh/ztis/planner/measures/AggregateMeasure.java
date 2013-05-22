@@ -1,16 +1,14 @@
 package pl.edu.agh.ztis.planner.measures;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.edu.agh.ztis.planner.model.PlanningResult;
 import pl.edu.agh.ztis.planner.model.PlanningStatistics;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class AggregateMeasure extends Measure {
 
-    @Autowired
-    private List<Measure> measures;
+    private final List<Measure> measures = new ArrayList<Measure>();
 
     @Override
     public PlanningStatistics getStatistics() {
@@ -19,6 +17,10 @@ public class AggregateMeasure extends Measure {
             statistics.combine(m.getStatistics());
         }
         return statistics;
+    }
+
+    public void addMeasure(Measure measure) {
+        measures.add(measure);
     }
 
     @Override

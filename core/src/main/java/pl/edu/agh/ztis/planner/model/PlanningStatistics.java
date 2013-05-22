@@ -17,7 +17,7 @@ public class PlanningStatistics {
         getStatistics().put(type, value);
     }
 
-    private Map<MeasureType, Double> getStatistics() {
+    public Map<MeasureType, Double> getStatistics() {
         return statistics;
     }
 }
