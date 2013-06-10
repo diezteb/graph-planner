@@ -68,6 +68,7 @@
 
     <wsdl:service name="GraphPlanningPortTypeService">
         <wsdl:port binding="tns:GraphPlanningPortTypeSoapBinding" name="GraphPlanningServicePort">
+            <soap:address location="http://localhost:9000/planning" />
         </wsdl:port>
     </wsdl:service>
 
