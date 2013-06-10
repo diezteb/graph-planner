@@ -7,7 +7,7 @@ import pl.edu.agh.ztis.planner.executors.task.PlanningJob;
 import pl.edu.agh.ztis.planner.mappers.AimaGraphCreator;
 import pl.edu.agh.ztis.planner.measures.AggregateMeasure;
 import pl.edu.agh.ztis.planner.measures.ExecutionTimeMeasure;
-import pl.edu.agh.ztis.planner.measures.MeasureType;
+import pl.edu.agh.ztis.planner.model.MeasureType;
 import pl.edu.agh.ztis.planner.measures.MemoryMeasure;
 import pl.edu.agh.ztis.planner.measures.PathLengthMeasure;
 import pl.edu.agh.ztis.planner.model.ExecutionResult;
@@ -26,7 +26,7 @@ public class MeasuresTest {
         measure.addMeasure(new MemoryMeasure());
         measure.addMeasure(new PathLengthMeasure());
 
-        PlanningJob job = graphCreator.createPlanningJob(tested, GraphHelper.createGraph());
+        PlanningJob job = graphCreator.createPlanningJob(tested, GraphHelper.createGraph(), null);
 
         SimpleExecutor executor = new SimpleExecutor();
         ExecutionResult executionResult = executor.execute(job, measure);

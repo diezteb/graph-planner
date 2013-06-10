@@ -31,7 +31,7 @@ public class ModelMapper {
         Planner<?> planner = algorithmResolver.resolveAlgorithm(parameters.getAlgorithm());
         validateProblem(graph, planner);
         PlanningJobCreator<?> graphCreator = findGraphCreator(planner.graphType());
-        return graphCreator.createPlanningJob(planner, graph);
+        return graphCreator.createPlanningJob(planner, graph, parameters.getResponseService());
     }
 
     private void validateProblem(GraphContent graph, Planner<?> planner) {

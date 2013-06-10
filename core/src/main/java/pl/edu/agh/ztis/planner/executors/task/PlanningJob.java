@@ -3,6 +3,7 @@ package pl.edu.agh.ztis.planner.executors.task;
 import pl.edu.agh.ztis.planner.model.PlanningProblem;
 import pl.edu.agh.ztis.planner.model.PlanningResult;
 import pl.edu.agh.ztis.planner.planners.Planner;
+import pl.edu.agh.ztis.planner.ws.ResponseService;
 
 import java.util.concurrent.Callable;
 
@@ -10,10 +11,12 @@ public class PlanningJob<T> implements Callable<PlanningResult> {
 
     private Planner<T> planner;
     private PlanningProblem<? extends T> problem;
+    private ResponseService responseService;
 
-    public PlanningJob(Planner<T> planner, PlanningProblem<? extends T> problem) {
+    public PlanningJob(Planner<T> planner, PlanningProblem<? extends T> problem, ResponseService responseService) {
         this.planner = planner;
         this.problem = problem;
+        this.responseService = responseService;
     }
 
     @Override
@@ -21,4 +24,7 @@ public class PlanningJob<T> implements Callable<PlanningResult> {
         return planner.executePlanning(problem);
     }
 
+    public ResponseService getResponseService() {
+        return responseService;
+    }
 }

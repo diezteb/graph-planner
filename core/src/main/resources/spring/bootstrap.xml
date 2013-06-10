@@ -15,4 +15,16 @@
         <context:include-filter type="annotation" expression="pl.edu.agh.ztis.planner.planners.discovery.PlannerComponent"/>
     </context:component-scan>
 
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/json" />
+    </bean>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

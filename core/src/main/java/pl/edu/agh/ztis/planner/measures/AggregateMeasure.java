@@ -3,6 +3,7 @@ package pl.edu.agh.ztis.planner.measures;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.edu.agh.ztis.planner.model.MeasureType;
 import pl.edu.agh.ztis.planner.model.PlanningResult;
 import pl.edu.agh.ztis.planner.model.PlanningStatistics;
 

@@ -5,6 +5,7 @@ import pl.edu.agh.ztis.planner.executors.task.PlanningJob;
 import pl.edu.agh.ztis.planner.model.PlanningProblem;
 import pl.edu.agh.ztis.planner.planners.GraphType;
 import pl.edu.agh.ztis.planner.planners.Planner;
+import pl.edu.agh.ztis.planner.ws.ResponseService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +13,11 @@ import java.util.List;
 public abstract class PlanningJobCreator<T> {
 
     @SuppressWarnings("unchecked")
-    public PlanningJob<? extends T> createPlanningJob(Planner<?> planner, GraphContent graph) {
+    public PlanningJob<? extends T> createPlanningJob(Planner<?> planner, GraphContent graph, ResponseService responseService) {
         List<NodeContent> nodes = filterNodes(graph.getAttributesOrNodesOrEdges());
         List<EdgeContent> edges = filterEdges(graph.getAttributesOrNodesOrEdges());
 
-        return new PlanningJob<>((Planner<T>) planner, createPlanningProblem(nodes, edges, graph.getStart(), graph.getEnd()));
+        return new PlanningJob<>((Planner<T>) planner, createPlanningProblem(nodes, edges, graph.getStart(), graph.getEnd()), responseService);
     }
 
     protected abstract PlanningProblem<? extends T> createPlanningProblem(List<NodeContent> nodes, List<EdgeContent> edges, String startNode, String endNode);

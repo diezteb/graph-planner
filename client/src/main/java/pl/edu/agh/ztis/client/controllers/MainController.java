@@ -21,7 +21,7 @@ public class MainController {
     private GraphCreator graphCreator;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView printWelcome(ModelMap model) {
+    public ModelAndView printWelcome() {
         ModelAndView mav = new ModelAndView("hello.jsp");
         PlanningTaskResponse response = serviceInvoker.invoke(graphCreator.createGraph());
         mav.addObject("message", response.getStatus());

@@ -3,8 +3,6 @@ package pl.edu.agh.ztis.planner.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import pl.edu.agh.ztis.planner.measures.MeasureType;
-
 public class PlanningStatistics {
 
     private final Map<MeasureType, Double> statistics = new HashMap<MeasureType, Double>();

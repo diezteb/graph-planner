@@ -2,6 +2,7 @@ package pl.edu.agh.ztis.planner.measures;
 
 import java.util.GregorianCalendar;
 
+import pl.edu.agh.ztis.planner.model.MeasureType;
 import pl.edu.agh.ztis.planner.model.PlanningResult;
 
 public class ExecutionTimeMeasure extends Measure {

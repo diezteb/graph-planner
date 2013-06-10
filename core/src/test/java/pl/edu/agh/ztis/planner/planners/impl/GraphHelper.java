@@ -81,7 +81,7 @@ public class GraphHelper {
 
     public static <T> List<WeightedEdge> findShortestPath(Planner<T> tested, PlanningJobCreator<T> graphCreator) {
         GraphContent graph = GraphHelper.createGraph();
-        PlanningJob<? extends T> planningJob = graphCreator.createPlanningJob(tested, graph);
+        PlanningJob<? extends T> planningJob = graphCreator.createPlanningJob(tested, graph, null);
 
         PlanningResult result = planningJob.call();
         return result.getPath();

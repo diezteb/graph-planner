@@ -1,5 +1,6 @@
 package pl.edu.agh.ztis.planner.measures;
 
+import pl.edu.agh.ztis.planner.model.MeasureType;
 import pl.edu.agh.ztis.planner.model.PlanningResult;
 
 public class MemoryMeasure extends Measure {

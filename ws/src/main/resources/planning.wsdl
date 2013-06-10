@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
                   xmlns:tns="http://agh.edu.pl/ztis/planner/ws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  xmlns:gexf="http://www.gexf.net/1.2draft"
+                  xmlns:gexf="http://www.gexf.net/1.2draft" xmlns="http://www.w3.org/2001/XMLSchema"
                   name="GraphPlanningService"
                   targetNamespace="http://agh.edu.pl/ztis/planner/ws">
     <wsdl:types>
@@ -24,10 +24,25 @@
                     <xs:enumeration value="UniformCost"/>
                 </xs:restriction>
             </xs:simpleType>
+
+            <xs:simpleType name="response-method">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="POST"/>
+                </xs:restriction>
+            </xs:simpleType>
+
+            <xs:complexType name="response-service">
+                <xs:sequence>
+                    <xs:element minOccurs="1" name="url" type="xs:string"/>
+                    <xs:element minOccurs="1" name="method" type="tns:response-method"/>
+                </xs:sequence>
+            </xs:complexType>
+
             <xs:complexType name="planning-task">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="graph" type="gexf:gexf-content"/>
-                    <xs:element minOccurs="0" name="algorithm" type="tns:planning-algorithm"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="graph" type="gexf:gexf-content"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="algorithm" type="tns:planning-algorithm"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="response-service" type="tns:response-service"/>
                 </xs:sequence>
             </xs:complexType>
 
