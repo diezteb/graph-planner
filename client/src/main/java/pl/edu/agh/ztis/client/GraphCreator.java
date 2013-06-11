@@ -45,7 +45,7 @@ public class GraphCreator {
             break;
         case EPPSTEIN_POWER_LAW:
             generator = new EppsteinPowerLawGenerator<Vertex, WeightedEdge>(getGraphFactory(), getVertexFactory(), getEdgesfactory(), vertices,
-                    edges, 100);
+                    edges, 5);
             graph = generator.create();
             break;
         case ERDOS_RENYI:
