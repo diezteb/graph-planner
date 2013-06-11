@@ -59,4 +59,12 @@ public class ResultsController {
         PlanningJob planningJob = resultsHolder.getPlanningJob(jobId);
         return planningJob.getTask().getGraph();
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{jobId}/check")
+    public
+    @ResponseBody
+    boolean isResultReady(@PathVariable String jobId) {
+        PlanningJob planningJob = resultsHolder.getPlanningJob(jobId);
+        return planningJob != null;
+    }
 }
