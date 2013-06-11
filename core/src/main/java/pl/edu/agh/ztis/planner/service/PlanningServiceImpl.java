@@ -17,6 +17,8 @@ import pl.edu.agh.ztis.planner.ws.GraphPlanningPortType;
 import pl.edu.agh.ztis.planner.ws.PlanningTask;
 import pl.edu.agh.ztis.planner.ws.PlanningTaskResponse;
 
+import java.util.UUID;
+
 @Component
 public class PlanningServiceImpl implements GraphPlanningPortType {
 
@@ -29,12 +31,14 @@ public class PlanningServiceImpl implements GraphPlanningPortType {
     @Override
     public PlanningTaskResponse schedulePlanning(
             @WebParam(partName = "parameters", name = "planning-task", targetNamespace = "http://agh.edu.pl/ztis/planning") PlanningTask parameters) {
+        String jobId = UUID.randomUUID().toString();
         PlanningJob planningJob = mapper.mapPlanningTask(parameters);
+        planningJob.setJobId(jobId);
 
         Measure measure = getAllMeasures();
         String status = executor.execute(planningJob, measure);
 
-        return new PlanningTaskResponse().withStatus(status);
+        return new PlanningTaskResponse().withStatus(status).withJobId(jobId);
     }
 
     private Measure getAllMeasures() {

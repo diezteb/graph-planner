@@ -32,6 +32,7 @@ public class AsynchronousExecutor {
                 measure.finalize(planningResult);
                 results.setResult(planningResult);
                 results.setStatistics(measure.getStatistics());
+                results.setJobId(task.getJobId());
 
                 ResponseService responseService = task.getResponseService();
 

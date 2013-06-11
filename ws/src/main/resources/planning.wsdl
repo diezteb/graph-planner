@@ -49,6 +49,7 @@
             <xs:complexType name="planning-task-response">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="status" type="xs:string"/>
+                    <xs:element minOccurs="0" name="job-id" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
         </xs:schema>

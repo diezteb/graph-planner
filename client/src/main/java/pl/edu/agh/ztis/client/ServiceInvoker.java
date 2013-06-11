@@ -1,15 +1,19 @@
 package pl.edu.agh.ztis.client;
 
-import net.gexf.format.graph.*;
+import net.gexf.format.graph.GexfContent;
+import net.gexf.format.graph.GraphContent;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ztis.planner.ws.*;
 
 @Component
 public class ServiceInvoker {
+    private static final String URL = "http://localhost:9000/planning";
+    private static final String RESPONSE_SERVICE_URL = "http://localhost:8080/results";
 
-    public static final String URL = "http://localhost:9000/planning";
-    public static final String RESPONSE_SERVICE_URL = "http://localhost:8080/results";
+    @Autowired
+    private ResultsHolder resultsHolder;
 
     public PlanningTaskResponse invoke(GraphContent graph) {
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
@@ -17,7 +21,7 @@ public class ServiceInvoker {
         factory.setAddress(URL);
         GraphPlanningPortType client = (GraphPlanningPortType) factory.create();
 
-        PlanningTaskResponse planningTaskResponse = client.schedulePlanning(new PlanningTask()
+        PlanningTask planningTask = new PlanningTask()
                 .withAlgorithm(PlanningAlgorithm.DIJKSTRA)
                 .withGraph(new GexfContent()
                         .withGraph(graph)
@@ -25,8 +29,9 @@ public class ServiceInvoker {
                 .withResponseService(new ResponseService()
                         .withMethod(ResponseMethod.POST)
                         .withUrl(RESPONSE_SERVICE_URL)
-                )
-        );
+                );
+        PlanningTaskResponse planningTaskResponse = client.schedulePlanning(planningTask);
+        resultsHolder.storePlanningTask(planningTaskResponse.getJobId(), planningTask);
         return planningTaskResponse;
     }
 
