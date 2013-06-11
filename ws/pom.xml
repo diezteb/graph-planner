@@ -55,6 +55,7 @@
                                         <extraarg>http://www.gexf.net/1.2draft=net.gexf.format.graph</extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>http://www.gexf.net/1.2draft/viz=net.gexf.format.graph.viz</extraarg>
+                                        <extraarg>-xjc-b,${basedir}/src/main/resources/binding.xjc</extraarg>
                                     </extraargs>
                                 </wsdlOption>
                             </wsdlOptions>

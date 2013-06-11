@@ -2,9 +2,9 @@ package pl.edu.agh.ztis.planner.mappers;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import net.gexf.format.graph.EdgeContent;
-import net.gexf.format.graph.EdgesContent;
-import net.gexf.format.graph.GraphContent;
+import net.gexf.format.graph.Edge;
+import net.gexf.format.graph.Edges;
+import net.gexf.format.graph.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.ztis.planner.executors.task.PlanningJob;
@@ -27,14 +27,14 @@ public class ModelMapper {
     private List<PlanningJobCreator<?>> graphCreators;
 
     public PlanningJob<?> mapPlanningTask(PlanningTask parameters) {
-        GraphContent graph = parameters.getGraph().getGraph();
+        Graph graph = parameters.getGraph().getGraph();
         Planner<?> planner = algorithmResolver.resolveAlgorithm(parameters.getAlgorithm());
         validateProblem(graph, planner);
         PlanningJobCreator<?> graphCreator = findGraphCreator(planner.graphType());
         return graphCreator.createPlanningJob(planner, graph, parameters.getResponseService());
     }
 
-    private void validateProblem(GraphContent graph, Planner<?> planner) {
+    private void validateProblem(Graph graph, Planner<?> planner) {
         if ((DIRECTED.equals(graph.getDefaultedgetype()) && !planner.supportsDirectedGraph()) || (isWeightedGraph(graph) && !planner.supportsWeightedGraph())) {
             throw new IllegalArgumentException("Graph type unsupported by chosen algorithm");
         }
@@ -48,15 +48,15 @@ public class ModelMapper {
         });
     }
 
-    private boolean isWeightedGraph(GraphContent graph) {
-        return tryFind(concat(transform(filter(graph.getAttributesOrNodesOrEdges(), EdgesContent.class), new Function<EdgesContent, List<EdgeContent>>() {
+    private boolean isWeightedGraph(Graph graph) {
+        return tryFind(concat(transform(filter(graph.getAttributesAndNodesAndEdges(), Edges.class), new Function<Edges, List<Edge>>() {
             @Override
-            public List<EdgeContent> apply(EdgesContent edgesContent) {
-                return edgesContent.getEdge();
+            public List<Edge> apply(Edges edgesContent) {
+                return edgesContent.getEdges();
             }
-        })), new Predicate<EdgeContent>() {
+        })), new Predicate<Edge>() {
             @Override
-            public boolean apply(net.gexf.format.graph.EdgeContent input) {
+            public boolean apply(Edge input) {
                 return input.getWeight() != null;
             }
         }).isPresent();

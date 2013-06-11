@@ -1,7 +1,7 @@
 package pl.edu.agh.ztis.planner.mappers;
 
-import net.gexf.format.graph.EdgeContent;
-import net.gexf.format.graph.NodeContent;
+import net.gexf.format.graph.Edge;
+import net.gexf.format.graph.Node;
 import org.jgrapht.Graph;
 import org.jgrapht.WeightedGraph;
 import org.jgrapht.graph.ClassBasedEdgeFactory;
@@ -19,17 +19,17 @@ import java.util.Map;
 public class JGraphTGraphCreator extends PlanningJobCreator<Graph<Vertex, JGraphTEdge>> {
 
     @Override
-    protected PlanningProblem<WeightedGraph<Vertex, JGraphTEdge>> createPlanningProblem(List<NodeContent> nodes, List<EdgeContent> edges, String startNode, String endNode) {
+    protected PlanningProblem<WeightedGraph<Vertex, JGraphTEdge>> createPlanningProblem(List<Node> nodes, List<Edge> edges, String startNode, String endNode) {
         Map<String, Vertex> vertexMap = new HashMap<>();
         WeightedGraph<Vertex, JGraphTEdge> graph = new SimpleDirectedWeightedGraph<>(new ClassBasedEdgeFactory<Vertex, JGraphTEdge>(JGraphTEdge.class));
 
-        for (NodeContent node : nodes) {
+        for (Node node : nodes) {
             Vertex vertex = new Vertex(node.getId());
             vertexMap.put(node.getId(), vertex);
             graph.addVertex(vertex);
         }
 
-        for (EdgeContent edge : edges) {
+        for (Edge edge : edges) {
             Vertex start = vertexMap.get(edge.getSource());
             Vertex end = vertexMap.get(edge.getTarget());
             JGraphTEdge weightedEdge = new JGraphTEdge();

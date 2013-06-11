@@ -11,40 +11,40 @@ import pl.edu.agh.ztis.planner.planners.Planner;
 import java.util.List;
 
 public class GraphHelper {
-    public static GraphContent createGraph() {
-        return new GraphContent()
+    public static Graph createGraph() {
+        return new Graph()
                 .withDefaultedgetype(DefaultedgetypeType.DIRECTED)
-                .withAttributesOrNodesOrEdges(new NodesContent()
-                        .withNode(new NodeContent().withId("1"))
-                        .withNode(new NodeContent().withId("2"))
-                        .withNode(new NodeContent().withId("3"))
-                        .withNode(new NodeContent().withId("4"))
-                        .withNode(new NodeContent().withId("5"))
-                        .withNode(new NodeContent().withId("6"))
-                        .withNode(new NodeContent().withId("7"))
-                        .withNode(new NodeContent().withId("8"))
-                        .withNode(new NodeContent().withId("9"))
-                        .withNode(new NodeContent().withId("10"))
-                ).withAttributesOrNodesOrEdges(new EdgesContent()
-                        .withEdge(edge(1, 2, 1))
-                        .withEdge(edge(2, 3, 1))
-                        .withEdge(edge(2, 4, 5))
-                        .withEdge(edge(2, 5, 1))
-                        .withEdge(edge(5, 8, 1))
-                        .withEdge(edge(5, 6, 1))
-                        .withEdge(edge(4, 6, 1))
-                        .withEdge(edge(6, 8, 1))
-                        .withEdge(edge(8, 7, 1))
-                        .withEdge(edge(7, 9, 1))
-                        .withEdge(edge(7, 10, 1))
-                        .withEdge(edge(4, 10, 5))
-                        .withEdge(edge(10, 1, 0))
-                ).withStart("1")
+                .withAttributesAndNodesAndEdges(new Nodes().withNodes(
+                        new Node().withId("1"),
+                        new Node().withId("2"),
+                        new Node().withId("3"),
+                        new Node().withId("4"),
+                        new Node().withId("5"),
+                        new Node().withId("6"),
+                        new Node().withId("7"),
+                        new Node().withId("8"),
+                        new Node().withId("9"),
+                        new Node().withId("10")
+                )).withAttributesAndNodesAndEdges(new Edges().withEdges(
+                        edge(1, 2, 1),
+                        edge(2, 3, 1),
+                        edge(2, 4, 5),
+                        edge(2, 5, 1),
+                        edge(5, 8, 1),
+                        edge(5, 6, 1),
+                        edge(4, 6, 1),
+                        edge(6, 8, 1),
+                        edge(8, 7, 1),
+                        edge(7, 9, 1),
+                        edge(7, 10, 1),
+                        edge(4, 10, 5),
+                        edge(10, 1, 0)
+                )).withStart("1")
                 .withEnd("10");
     }
 
-    private static EdgeContent edge(int start, int end, float weight) {
-        return new EdgeContent()
+    private static Edge edge(int start, int end, float weight) {
+        return new Edge()
                 .withSource(String.valueOf(start))
                 .withTarget(String.valueOf(end))
                 .withWeight(weight);
@@ -80,7 +80,7 @@ public class GraphHelper {
     }
 
     public static <T> List<WeightedEdge> findShortestPath(Planner<T> tested, PlanningJobCreator<T> graphCreator) {
-        GraphContent graph = GraphHelper.createGraph();
+        Graph graph = GraphHelper.createGraph();
         PlanningJob<? extends T> planningJob = graphCreator.createPlanningJob(tested, graph, null);
 
         PlanningResult result = planningJob.call();

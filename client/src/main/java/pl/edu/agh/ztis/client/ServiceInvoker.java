@@ -1,7 +1,7 @@
 package pl.edu.agh.ztis.client;
 
-import net.gexf.format.graph.GexfContent;
-import net.gexf.format.graph.GraphContent;
+import net.gexf.format.graph.Gexf;
+import net.gexf.format.graph.Graph;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class ServiceInvoker {
     @Autowired
     private ResultsHolder resultsHolder;
 
-    public PlanningTaskResponse invoke(GraphContent graph) {
+    public PlanningTaskResponse invoke(Graph graph) {
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(GraphPlanningPortType.class);
         factory.setAddress(URL);
@@ -23,7 +23,7 @@ public class ServiceInvoker {
 
         PlanningTask planningTask = new PlanningTask()
                 .withAlgorithm(PlanningAlgorithm.DIJKSTRA)
-                .withGraph(new GexfContent()
+                .withGraph(new Gexf()
                         .withGraph(graph)
                 )
                 .withResponseService(new ResponseService()

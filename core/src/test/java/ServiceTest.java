@@ -1,4 +1,4 @@
-import net.gexf.format.graph.GexfContent;
+import net.gexf.format.graph.Gexf;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class ServiceTest {
 
         PlanningTaskResponse planningTaskResponse = client.schedulePlanning(new PlanningTask()
                 .withAlgorithm(PlanningAlgorithm.DIJKSTRA)
-                .withGraph(new GexfContent()
+                .withGraph(new Gexf()
                         .withGraph(GraphHelper.createGraph())
                 )
         );

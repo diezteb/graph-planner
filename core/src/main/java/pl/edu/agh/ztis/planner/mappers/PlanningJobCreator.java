@@ -13,32 +13,32 @@ import java.util.List;
 public abstract class PlanningJobCreator<T> {
 
     @SuppressWarnings("unchecked")
-    public PlanningJob<? extends T> createPlanningJob(Planner<?> planner, GraphContent graph, ResponseService responseService) {
-        List<NodeContent> nodes = filterNodes(graph.getAttributesOrNodesOrEdges());
-        List<EdgeContent> edges = filterEdges(graph.getAttributesOrNodesOrEdges());
+    public PlanningJob<? extends T> createPlanningJob(Planner<?> planner, Graph graph, ResponseService responseService) {
+        List<Node> nodes = filterNodes(graph.getAttributesAndNodesAndEdges());
+        List<Edge> edges = filterEdges(graph.getAttributesAndNodesAndEdges());
 
         return new PlanningJob<>((Planner<T>) planner, createPlanningProblem(nodes, edges, graph.getStart(), graph.getEnd()), responseService);
     }
 
-    protected abstract PlanningProblem<? extends T> createPlanningProblem(List<NodeContent> nodes, List<EdgeContent> edges, String startNode, String endNode);
+    protected abstract PlanningProblem<? extends T> createPlanningProblem(List<Node> nodes, List<Edge> edges, String startNode, String endNode);
 
     abstract GraphType graphType();
 
-    private List<NodeContent> filterNodes(List<Object> attributesOrNodesOrEdges) {
-        List<NodeContent> nodes = new ArrayList<>();
+    private List<Node> filterNodes(List<Object> attributesOrNodesOrEdges) {
+        List<Node> nodes = new ArrayList<>();
         for (Object attributesOrNodesOrEdge : attributesOrNodesOrEdges) {
-            if (attributesOrNodesOrEdge instanceof NodesContent) {
-                nodes.addAll(((NodesContent) attributesOrNodesOrEdge).getNode());
+            if (attributesOrNodesOrEdge instanceof Nodes) {
+                nodes.addAll(((Nodes) attributesOrNodesOrEdge).getNodes());
             }
         }
         return nodes;
     }
 
-    private List<EdgeContent> filterEdges(List<Object> attributesOrNodesOrEdges) {
-        List<EdgeContent> edges = new ArrayList<>();
+    private List<Edge> filterEdges(List<Object> attributesOrNodesOrEdges) {
+        List<Edge> edges = new ArrayList<>();
         for (Object attributesOrNodesOrEdge : attributesOrNodesOrEdges) {
-            if (attributesOrNodesOrEdge instanceof EdgesContent) {
-                edges.addAll(((EdgesContent) attributesOrNodesOrEdge).getEdge());
+            if (attributesOrNodesOrEdge instanceof Edges) {
+                edges.addAll(((Edges) attributesOrNodesOrEdge).getEdges());
             }
         }
         return edges;
