@@ -15,14 +15,14 @@ public class ServiceInvoker {
     @Autowired
     private ResultsHolder resultsHolder;
 
-    public PlanningTaskResponse invoke(Graph graph) {
+    public PlanningTaskResponse invoke(Graph graph, PlanningAlgorithm planningAlgorithm) {
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(GraphPlanningPortType.class);
         factory.setAddress(URL);
         GraphPlanningPortType client = (GraphPlanningPortType) factory.create();
 
         PlanningTask planningTask = new PlanningTask()
-                .withAlgorithm(PlanningAlgorithm.DIJKSTRA)
+                .withAlgorithm(planningAlgorithm)
                 .withGraph(new Gexf()
                         .withGraph(graph)
                 )

@@ -5,6 +5,7 @@ public class GeneratorFormBean {
     private int vertices;
     private int edges;
     private String type;
+    private String algorithm;
 
     /**
      * @return the vertices
@@ -51,4 +52,11 @@ public class GeneratorFormBean {
         this.type = type;
     }
 
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(String algorithm) {
+        this.algorithm = algorithm;
+    }
 }

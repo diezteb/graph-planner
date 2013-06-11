@@ -16,6 +16,7 @@ import pl.edu.agh.ztis.client.GeneratorType;
 import pl.edu.agh.ztis.client.GraphCreator;
 import pl.edu.agh.ztis.client.ServiceInvoker;
 import pl.edu.agh.ztis.client.controllers.beans.GeneratorFormBean;
+import pl.edu.agh.ztis.planner.ws.PlanningAlgorithm;
 import pl.edu.agh.ztis.planner.ws.PlanningTaskResponse;
 
 import com.google.common.base.Function;
@@ -41,6 +42,7 @@ public class MainController {
         ModelAndView mav = new ModelAndView("input");
         List<String> availableTypes = new ArrayList<String>(getAvailableGeneratorTypes());
         mav.addObject("availableTypes", availableTypes);
+        mav.addObject("algorithms", PlanningAlgorithm.values());
         return mav;
     }
 
@@ -57,7 +59,7 @@ public class MainController {
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
     public ModelAndView generateAndInvoke(@ModelAttribute("formBean") GeneratorFormBean bean) {
         PlanningTaskResponse response = serviceInvoker.invoke(graphCreator.createGraph(bean.getVertices(), bean.getEdges(),
-                GeneratorType.valueOf(bean.getType())));
+                GeneratorType.valueOf(bean.getType())), PlanningAlgorithm.valueOf(bean.getAlgorithm()));
         ModelAndView mav = new ModelAndView("sentToExecute");
         mav.addObject("message", response);
         return mav;
