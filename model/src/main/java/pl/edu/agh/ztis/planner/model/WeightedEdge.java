@@ -19,6 +19,14 @@ public class WeightedEdge {
         return weight;
     }
 
+    public Vertex getStart() {
+        return start;
+    }
+
+    public Vertex getEnd() {
+        return end;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

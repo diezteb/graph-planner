@@ -20,16 +20,8 @@ public class ResultsHolder {
         resultsMap.get(result.getJobId()).setResult(result);
     }
 
-    private static class PlanningJob{
-        private PlanningTask task;
-        private ExecutionResult result;
-
-        private PlanningJob(PlanningTask task) {
-            this.task = task;
-        }
-
-        private void setResult(ExecutionResult result) {
-            this.result = result;
-        }
+    public PlanningJob getPlanningJob(String jobId){
+        return resultsMap.get(jobId);
     }
+
 }

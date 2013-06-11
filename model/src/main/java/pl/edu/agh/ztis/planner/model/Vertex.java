@@ -3,6 +3,9 @@ package pl.edu.agh.ztis.planner.model;
 public class Vertex {
     private String id;
 
+    public Vertex() {
+    }
+
     public Vertex(String id) {
         this.id = id;
     }

@@ -65,10 +65,11 @@ public class GraphCreator {
     }
 
     private Edges getEdgesContent(Graph<Vertex, WeightedEdge> input) {
+        int edgeId = 1;
         Edges content = new Edges();
         for (WeightedEdge edge : input.getEdges()) {
             Pair<Vertex> endpoints = input.getEndpoints(edge);
-            content.withEdges(edge(endpoints.getFirst().getId(), endpoints.getSecond().getId(), edge.getWeight()));
+            content.withEdges(edge(endpoints.getFirst().getId(), endpoints.getSecond().getId(), edge.getWeight(), String.valueOf(edgeId++)));
         }
         return content;
     }
@@ -133,28 +134,28 @@ public class GraphCreator {
                         new Node().withId("9"),
                         new Node().withId("10")
                 )).withAttributesAndNodesAndEdges(new Edges().withEdges(
-                        edge(1, 2, 1),
-                        edge(2, 3, 1),
-                        edge(2, 4, 5),
-                        edge(2, 5, 1),
-                        edge(5, 8, 1),
-                        edge(5, 6, 1),
-                        edge(4, 6, 1),
-                        edge(6, 8, 1),
-                        edge(8, 7, 1),
-                        edge(7, 9, 1),
-                        edge(7, 10, 1),
-                        edge(4, 10, 5),
-                        edge(10, 1, 0)
+                        edge(1, 2, 1, 1),
+                        edge(2, 3, 1, 2),
+                        edge(2, 4, 5, 3),
+                        edge(2, 5, 1, 4),
+                        edge(5, 8, 1, 5),
+                        edge(5, 6, 1, 6),
+                        edge(4, 6, 1, 7),
+                        edge(6, 8, 1, 8),
+                        edge(8, 7, 1, 9),
+                        edge(7, 9, 1, 10),
+                        edge(7, 10, 1, 11),
+                        edge(4, 10, 5, 12),
+                        edge(10, 1, 0, 13)
                 )).withStart("1")
                 .withEnd("10");
     }
 
-    private Edge edge(String start, String end, double weight) {
-        return new Edge().withSource(start).withTarget(end).withWeight(Double.valueOf(weight).floatValue());
+    private Edge edge(String start, String end, double weight, String id) {
+        return new Edge().withId(id).withSource(start).withTarget(end).withWeight(Double.valueOf(weight).floatValue());
     }
 
-    private Edge edge(int start, int end, float weight) {
-        return new Edge().withSource(String.valueOf(start)).withTarget(String.valueOf(end)).withWeight(weight);
+    private Edge edge(int start, int end, float weight, int id) {
+        return new Edge().withId(String.valueOf(id)).withSource(String.valueOf(start)).withTarget(String.valueOf(end)).withWeight(weight);
     }
 }
