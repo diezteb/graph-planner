@@ -61,6 +61,7 @@ public class GraphCreator {
         case MIXED_RANDOM:
             graph = MixedRandomGraphGenerator.<Vertex, WeightedEdge> generateMixedRandomGraph(getGraphFactory(), getVertexFactory(),
                     getEdgesfactory(), new HashMap<WeightedEdge, Number>(), vertices, new HashSet<Vertex>());
+            break;
         default:
             return createGraph();
         }
