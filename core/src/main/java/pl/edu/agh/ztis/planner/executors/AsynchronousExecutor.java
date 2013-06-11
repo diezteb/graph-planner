@@ -38,7 +38,7 @@ public class AsynchronousExecutor {
                 switch (responseService.getMethod()) {
                     case POST:
                         HttpEntity<ExecutionResult> entity = new HttpEntity<>(results);
-                        restTemplate.postForLocation(responseService.getUrl(), entity);
+                        restTemplate.postForEntity(responseService.getUrl(), entity, Void.class);
                         break;
                 }
             }

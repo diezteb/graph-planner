@@ -6,6 +6,9 @@ public class WeightedEdge {
     private Vertex end;
     private double weight;
 
+    public WeightedEdge() {
+    }
+
     public WeightedEdge(Vertex start, Vertex end, double weight) {
         this.start = start;
         this.end = end;
