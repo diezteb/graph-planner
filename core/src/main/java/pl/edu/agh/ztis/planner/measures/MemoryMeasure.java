@@ -11,7 +11,12 @@ public class MemoryMeasure extends Measure {
 
     @Override
     protected double getValue() {
-        return instrumentationThread.getMaxCollectedValue() - (initialMemory + finalMemory) / 2;
+        long maxCollected = instrumentationThread.getMaxCollectedValue();
+        if (maxCollected > 0) {
+            return maxCollected - (initialMemory + finalMemory) / 2;
+        } else { // when thread wasn't even able to start
+            return maxCollected;
+        }
     }
 
     @Override

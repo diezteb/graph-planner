@@ -1,19 +1,33 @@
 package pl.edu.agh.ztis.client;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.UUID;
+
+import net.gexf.format.graph.DefaultedgetypeType;
+import net.gexf.format.graph.Edge;
+import net.gexf.format.graph.Edges;
+import net.gexf.format.graph.Node;
+import net.gexf.format.graph.Nodes;
+
+import org.apache.commons.collections15.Factory;
+import org.springframework.stereotype.Component;
+
+import pl.edu.agh.ztis.planner.model.Vertex;
+import pl.edu.agh.ztis.planner.model.WeightedEdge;
 import edu.uci.ics.jung.algorithms.generators.GraphGenerator;
-import edu.uci.ics.jung.algorithms.generators.random.*;
+import edu.uci.ics.jung.algorithms.generators.random.BarabasiAlbertGenerator;
+import edu.uci.ics.jung.algorithms.generators.random.EppsteinPowerLawGenerator;
+import edu.uci.ics.jung.algorithms.generators.random.ErdosRenyiGenerator;
+import edu.uci.ics.jung.algorithms.generators.random.KleinbergSmallWorldGenerator;
+import edu.uci.ics.jung.algorithms.generators.random.MixedRandomGraphGenerator;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.util.Pair;
-import net.gexf.format.graph.*;
-import org.apache.commons.collections15.Factory;
-import org.springframework.stereotype.Component;
-import pl.edu.agh.ztis.planner.model.Vertex;
-import pl.edu.agh.ztis.planner.model.WeightedEdge;
-
-import java.util.*;
 
 @Component
 public class GraphCreator {
@@ -24,29 +38,31 @@ public class GraphCreator {
         GraphGenerator<Vertex, WeightedEdge> generator = null;
         Graph<Vertex, WeightedEdge> graph = null;
         switch (generatorType) {
-            case BARBASI_ALBERT:
-                generator = new BarabasiAlbertGenerator<Vertex, WeightedEdge>(getGraphFactory(), getVertexFactory(), getEdgesfactory(), vertices, edges,
-                        new HashSet<Vertex>());
-                graph = generator.create();
-                break;
-            case EPPSTEIN_POWER_LAW:
-                generator = new EppsteinPowerLawGenerator<Vertex, WeightedEdge>(getGraphFactory(), getVertexFactory(), getEdgesfactory(), vertices,
-                        edges, 100);
-                graph = generator.create();
-                break;
-            case ERDOS_RENYI:
-                generator = new ErdosRenyiGenerator<Vertex, WeightedEdge>(getGraphFactoryU(), getVertexFactory(), getEdgesfactory(), vertices, 0.1);
-                graph = generator.create();
-                break;
-            case KLEINBERG_SMALL_WORLD:
-                generator = new KleinbergSmallWorldGenerator<Vertex, WeightedEdge>(getGraphFactoryU(), getVertexFactory(), getEdgesfactory(), 2, 0.1);
-                graph = generator.create();
-                break;
-            case MIXED_RANDOM:
-                graph = MixedRandomGraphGenerator.<Vertex, WeightedEdge>generateMixedRandomGraph(getGraphFactory(), getVertexFactory(),
-                        getEdgesfactory(), new HashMap<WeightedEdge, Number>(), vertices, new HashSet<Vertex>());
-            default:
-                return createGraph();
+        case BARBASI_ALBERT:
+            generator = new BarabasiAlbertGenerator<Vertex, WeightedEdge>(getGraphFactory(), getVertexFactory(), getEdgesfactory(), vertices, edges,
+                    new HashSet<Vertex>());
+            graph = generator.create();
+            break;
+        case EPPSTEIN_POWER_LAW:
+            generator = new EppsteinPowerLawGenerator<Vertex, WeightedEdge>(getGraphFactory(), getVertexFactory(), getEdgesfactory(), vertices,
+                    edges, 100);
+            graph = generator.create();
+            break;
+        case ERDOS_RENYI:
+            generator = new ErdosRenyiGenerator<Vertex, WeightedEdge>(getGraphFactoryU(), getVertexFactory(), getEdgesfactory(), vertices, edges
+                    / (vertices / 2.0));
+            graph = generator.create();
+            break;
+        case KLEINBERG_SMALL_WORLD:
+            generator = new KleinbergSmallWorldGenerator<Vertex, WeightedEdge>(getGraphFactoryU(), getVertexFactory(), getEdgesfactory(),
+                    (int) Math.sqrt(vertices), 0.1);
+            graph = generator.create();
+            break;
+        case MIXED_RANDOM:
+            graph = MixedRandomGraphGenerator.<Vertex, WeightedEdge> generateMixedRandomGraph(getGraphFactory(), getVertexFactory(),
+                    getEdgesfactory(), new HashMap<WeightedEdge, Number>(), vertices, new HashSet<Vertex>());
+        default:
+            return createGraph();
         }
         return generate(graph);
     }
@@ -122,33 +138,14 @@ public class GraphCreator {
     public net.gexf.format.graph.Graph createGraph() {
         return new net.gexf.format.graph.Graph()
                 .withDefaultedgetype(DefaultedgetypeType.DIRECTED)
-                .withAttributesAndNodesAndEdges(new Nodes().withNodes(
-                        new Node().withId("1"),
-                        new Node().withId("2"),
-                        new Node().withId("3"),
-                        new Node().withId("4"),
-                        new Node().withId("5"),
-                        new Node().withId("6"),
-                        new Node().withId("7"),
-                        new Node().withId("8"),
-                        new Node().withId("9"),
-                        new Node().withId("10")
-                )).withAttributesAndNodesAndEdges(new Edges().withEdges(
-                        edge(1, 2, 1, 1),
-                        edge(2, 3, 1, 2),
-                        edge(2, 4, 5, 3),
-                        edge(2, 5, 1, 4),
-                        edge(5, 8, 1, 5),
-                        edge(5, 6, 1, 6),
-                        edge(4, 6, 1, 7),
-                        edge(6, 8, 1, 8),
-                        edge(8, 7, 1, 9),
-                        edge(7, 9, 1, 10),
-                        edge(7, 10, 1, 11),
-                        edge(4, 10, 5, 12),
-                        edge(10, 1, 0, 13)
-                )).withStart("1")
-                .withEnd("10");
+                .withAttributesAndNodesAndEdges(
+                        new Nodes().withNodes(new Node().withId("1"), new Node().withId("2"), new Node().withId("3"), new Node().withId("4"),
+                                new Node().withId("5"), new Node().withId("6"), new Node().withId("7"), new Node().withId("8"),
+                                new Node().withId("9"), new Node().withId("10")))
+                .withAttributesAndNodesAndEdges(
+                        new Edges().withEdges(edge(1, 2, 1, 1), edge(2, 3, 1, 2), edge(2, 4, 5, 3), edge(2, 5, 1, 4), edge(5, 8, 1, 5),
+                                edge(5, 6, 1, 6), edge(4, 6, 1, 7), edge(6, 8, 1, 8), edge(8, 7, 1, 9), edge(7, 9, 1, 10), edge(7, 10, 1, 11),
+                                edge(4, 10, 5, 12), edge(10, 1, 0, 13))).withStart("1").withEnd("10");
     }
 
     private Edge edge(String start, String end, double weight, String id) {
