@@ -44,7 +44,12 @@ public class PlanningJobScheduler {
     }
 
     private String[] createCmd(String jobPath) {
-        return new String[] { "mvn.bat", "exec:java", format("-Dexec.args=%s", jobPath) };
+        String os = System.getProperty("os.name").toLowerCase();
+        String mvnExecutable = "mvn";
+        if (os.contains("win")) {
+            mvnExecutable += ".bat";
+        }
+        return new String[] { mvnExecutable, "exec:java", format("-Dexec.args=%s", jobPath) };
     }
 
     private void logJobExecution(final InputStream stream) {
