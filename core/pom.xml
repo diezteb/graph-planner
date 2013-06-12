@@ -28,10 +28,27 @@
                 <directory>src/main/resources/spring</directory>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>pl.edu.agh.ztis.planner.Runner</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
-      <dependency>
+        <dependency>
             <groupId>pl.edu.agh.ztis.graph-planner</groupId>
             <artifactId>ws</artifactId>
             <version>1.0</version>
