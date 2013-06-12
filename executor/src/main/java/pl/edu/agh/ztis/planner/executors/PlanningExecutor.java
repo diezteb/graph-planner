@@ -32,6 +32,7 @@ public class PlanningExecutor {
         File file = Paths.get(jobPath).toFile();
         ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
         PlanningTask planningTask = (PlanningTask) stream.readObject();
+        stream.close();
 
         Path p = Paths.get(jobPath);
         String jobId = p.getFileName().toString();
