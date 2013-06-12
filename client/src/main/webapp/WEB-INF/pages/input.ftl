@@ -1,5 +1,8 @@
 <#import "/spring.ftl" as spring />
 <html>
+<head>
+    <link href="/resources/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
 <body>
     <@spring.bind "availableTypes" />
     <@spring.bind "algorithms" />
@@ -12,7 +15,7 @@
         <br />
         Algorithm: <@spring.formSingleSelect "formBean.algorithm", algorithms, ""/>
         <br />
-        <input type="submit" value="Run" />
+        <button type="submit">Run</button>
     </form>
 </body>
 </html>

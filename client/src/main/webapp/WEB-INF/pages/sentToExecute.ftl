@@ -1,5 +1,8 @@
 <#import "/spring.ftl" as spring />
 <html>
+<head>
+    <link href="/resources/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
 <body>
     <h5>${message.status}</h5>
     <span>Waiting for results to arrive...</span>
