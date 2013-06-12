@@ -171,7 +171,7 @@ public class GraphCreator {
                 int end = (start + skip) % vertices;
                 edges.add(edge(start, end, r.nextInt(100), i));
                 start++;
-                if (start > vertices) {
+                if (start >= vertices) {
                     start = 0;
                     skip += 1;
                 }
