@@ -1,8 +1,10 @@
 package pl.edu.agh.ztis.client;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -50,11 +52,11 @@ public class GraphCreator {
             break;
         case ERDOS_RENYI:
             generator = new ErdosRenyiGenerator<Vertex, WeightedEdge>(getGraphFactoryU(), getVertexFactory(), getEdgesfactory(), vertices, edges
-                    / (vertices / 2.0));
+                    / (vertices * vertices * 1.0));
             graph = generator.create();
             break;
         case KLEINBERG_SMALL_WORLD:
-            generator = new KleinbergSmallWorldGenerator<Vertex, WeightedEdge>(getGraphFactoryU(), getVertexFactory(), getEdgesfactory(),
+            generator = new KleinbergSmallWorldGenerator<Vertex, WeightedEdge>(getGraphFactory(), getVertexFactory(), getEdgesfactory(),
                     (int) Math.sqrt(vertices), 0.1);
             graph = generator.create();
             break;
@@ -62,6 +64,9 @@ public class GraphCreator {
             graph = MixedRandomGraphGenerator.<Vertex, WeightedEdge> generateMixedRandomGraph(getGraphFactory(), getVertexFactory(),
                     getEdgesfactory(), new HashMap<WeightedEdge, Number>(), vertices, new HashSet<Vertex>());
             break;
+        case RANDOM_CONNECTED:
+            return createConnectedGraph(vertices, edges);
+        case SAMPLE:
         default:
             return createGraph();
         }
@@ -147,6 +152,40 @@ public class GraphCreator {
                         new Edges().withEdges(edge(1, 2, 1, 1), edge(2, 3, 1, 2), edge(2, 4, 5, 3), edge(2, 5, 1, 4), edge(5, 8, 1, 5),
                                 edge(5, 6, 1, 6), edge(4, 6, 1, 7), edge(6, 8, 1, 8), edge(8, 7, 1, 9), edge(7, 9, 1, 10), edge(7, 10, 1, 11),
                                 edge(4, 10, 5, 12), edge(10, 1, 0, 13))).withStart("1").withEnd("10");
+    }
+
+    private net.gexf.format.graph.Graph createConnectedGraph(int vertices, int edges) {
+        int start = r.nextInt(vertices - 1);
+        int end = start + r.nextInt(vertices - start);
+        return new net.gexf.format.graph.Graph().withDefaultedgetype(DefaultedgetypeType.DIRECTED)
+                .withAttributesAndNodesAndEdges(createVertices(vertices)).withAttributesAndNodesAndEdges(createEdges(vertices, edges))
+                .withStart(Integer.valueOf(start).toString()).withEnd(Integer.valueOf(end).toString());
+    }
+
+    private Edges createEdges(int vertices, int edgesNumber) {
+        List<Edge> edges = new ArrayList<Edge>();
+        if (vertices > 1) {
+            int skip = 1;
+            int start = 0;
+            for (int i = 0; i < edgesNumber; i++) {
+                int end = (start + skip) % vertices;
+                edges.add(edge(start, end, r.nextInt(100), i));
+                start++;
+                if (start > vertices) {
+                    start = 0;
+                    skip += 1;
+                }
+            }
+        }
+        return new Edges().withEdges(edges);
+    }
+
+    private Nodes createVertices(int vertices) {
+        List<Node> nodes = new ArrayList<Node>();
+        for (int i = 0; i < vertices; i++) {
+            nodes.add(new Node().withId(Integer.valueOf(i).toString()));
+        }
+        return new Nodes().withNodes(nodes);
     }
 
     private Edge edge(String start, String end, double weight, String id) {
