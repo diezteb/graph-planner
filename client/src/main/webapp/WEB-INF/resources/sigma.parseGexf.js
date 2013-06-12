@@ -142,7 +142,7 @@ sigma.publicPrototype.parseGexf = function(gexfPath) {
             var id = edgeNode.getAttribute('id');
             var source = edgeNode.getAttribute('source');
             var target = edgeNode.getAttribute('target');
-            var label = edgeNode.getAttribute('label');
+            var label = edgeNode.getAttribute('weight');
             var edge = {
                 id:         id,
                 sourceID:   source,

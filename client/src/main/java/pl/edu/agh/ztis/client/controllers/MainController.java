@@ -40,20 +40,19 @@ public class MainController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm() {
         ModelAndView mav = new ModelAndView("input");
-        List<String> availableTypes = new ArrayList<String>(getAvailableGeneratorTypes());
+        List<String> availableTypes = new ArrayList<>(getAvailableGeneratorTypes());
         mav.addObject("availableTypes", availableTypes);
         mav.addObject("algorithms", PlanningAlgorithm.values());
         return mav;
     }
 
     private Collection<String> getAvailableGeneratorTypes() {
-        Collection<String> availableTypes = Collections2.transform(Arrays.asList(GeneratorType.values()), new Function<GeneratorType, String>() {
+        return Collections2.transform(Arrays.asList(GeneratorType.values()), new Function<GeneratorType, String>() {
             @Override
             public String apply(GeneratorType type) {
                 return type.toString();
             }
         });
-        return availableTypes;
     }
 
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
