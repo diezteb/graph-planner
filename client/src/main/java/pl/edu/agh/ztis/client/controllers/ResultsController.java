@@ -65,6 +65,6 @@ public class ResultsController {
     @ResponseBody
     boolean isResultReady(@PathVariable String jobId) {
         PlanningJob planningJob = resultsHolder.getPlanningJob(jobId);
-        return planningJob != null;
+        return planningJob != null && planningJob.getResult() != null;
     }
 }
