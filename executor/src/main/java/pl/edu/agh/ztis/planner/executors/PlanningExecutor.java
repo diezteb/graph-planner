@@ -41,6 +41,7 @@ public class PlanningExecutor {
 
         Measure measure = getAllMeasures();
         executor.execute(planningJob, measure);
+        file.deleteOnExit();
     }
 
     private Measure getAllMeasures() {

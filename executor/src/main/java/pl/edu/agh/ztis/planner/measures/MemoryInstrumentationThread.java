@@ -14,7 +14,8 @@ public class MemoryInstrumentationThread extends Thread {
     public void run() {
         while (keepRunning) {
             try {
-                long heap = Runtime.getRuntime().totalMemory();
+                Runtime rt = Runtime.getRuntime();
+                long heap = rt.totalMemory() - rt.freeMemory();
                 if (heap > maxHeapValue) {
                     maxHeapValue = heap;
                 }
