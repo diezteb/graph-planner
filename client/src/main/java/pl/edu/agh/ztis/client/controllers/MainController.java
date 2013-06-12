@@ -37,7 +37,7 @@ public class MainController {
         return new GeneratorFormBean();
     }
 
-    @RequestMapping(value = "/input", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView displayForm() {
         ModelAndView mav = new ModelAndView("input");
         List<String> availableTypes = new ArrayList<String>(getAvailableGeneratorTypes());
@@ -58,8 +58,9 @@ public class MainController {
 
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
     public ModelAndView generateAndInvoke(@ModelAttribute("formBean") GeneratorFormBean bean) {
-        PlanningTaskResponse response = serviceInvoker.invoke(graphCreator.createGraph(bean.getVertices(), bean.getEdges(),
-                GeneratorType.valueOf(bean.getType())), PlanningAlgorithm.valueOf(bean.getAlgorithm()));
+        PlanningTaskResponse response = serviceInvoker.invoke(
+                graphCreator.createGraph(bean.getVertices(), bean.getEdges(), GeneratorType.valueOf(bean.getType())),
+                PlanningAlgorithm.valueOf(bean.getAlgorithm()));
         ModelAndView mav = new ModelAndView("sentToExecute");
         mav.addObject("message", response);
         return mav;

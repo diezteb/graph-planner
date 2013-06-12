@@ -1,10 +1,6 @@
 package pl.edu.agh.ztis.planner.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.edu.agh.ztis.planner.ws.PlanningTask;
+import static java.lang.String.format;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,12 +10,17 @@ import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static java.lang.String.format;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import pl.edu.agh.ztis.planner.ws.PlanningTask;
 
 @Component
 public class PlanningJobScheduler {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlanningServiceImpl.class);
-    private static final String EXECUTOR_MODULE = "executor";
+    private static final String EXECUTOR_MODULE = "../executor";
     private ExecutorService loggingService;
 
     @Autowired
@@ -43,7 +44,7 @@ public class PlanningJobScheduler {
     }
 
     private String[] createCmd(String jobPath) {
-        return new String[]{"mvn", "exec:java", format("-Dexec.args=%s", jobPath)};
+        return new String[] { "mvn.bat", "exec:java", format("-Dexec.args=%s", jobPath) };
     }
 
     private void logJobExecution(final InputStream stream) {

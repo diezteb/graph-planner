@@ -1,17 +1,23 @@
 package pl.edu.agh.ztis.planner.executors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.edu.agh.ztis.planner.executors.task.PlanningJob;
-import pl.edu.agh.ztis.planner.mappers.ModelMapper;
-import pl.edu.agh.ztis.planner.measures.*;
-import pl.edu.agh.ztis.planner.ws.PlanningTask;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import pl.edu.agh.ztis.planner.executors.task.PlanningJob;
+import pl.edu.agh.ztis.planner.mappers.ModelMapper;
+import pl.edu.agh.ztis.planner.measures.AggregateMeasure;
+import pl.edu.agh.ztis.planner.measures.ExecutionTimeMeasure;
+import pl.edu.agh.ztis.planner.measures.Measure;
+import pl.edu.agh.ztis.planner.measures.MemoryMeasure;
+import pl.edu.agh.ztis.planner.measures.PathLengthMeasure;
+import pl.edu.agh.ztis.planner.ws.PlanningTask;
 
 @Component
 public class PlanningExecutor {
@@ -27,15 +33,14 @@ public class PlanningExecutor {
         ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file));
         PlanningTask planningTask = (PlanningTask) stream.readObject();
 
-        String[] parts = jobPath.split("/");
-        String jobId = parts[parts.length - 1];
+        Path p = Paths.get(jobPath);
+        String jobId = p.getFileName().toString();
         PlanningJob<?> planningJob = mapper.mapPlanningTask(planningTask);
         planningJob.setJobId(jobId);
 
         Measure measure = getAllMeasures();
         executor.execute(planningJob, measure);
     }
-
 
     private Measure getAllMeasures() {
         AggregateMeasure measure = new AggregateMeasure();
