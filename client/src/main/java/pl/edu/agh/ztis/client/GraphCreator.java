@@ -155,9 +155,11 @@ public class GraphCreator {
     }
 
     private net.gexf.format.graph.Graph createConnectedGraph(int vertices, int edges) {
+        int start = r.nextInt(vertices - 1);
+        int end = start + r.nextInt(vertices - start);
         return new net.gexf.format.graph.Graph().withDefaultedgetype(DefaultedgetypeType.DIRECTED)
                 .withAttributesAndNodesAndEdges(createVertices(vertices)).withAttributesAndNodesAndEdges(createEdges(vertices, edges))
-                .withStart(Integer.valueOf(r.nextInt(vertices)).toString()).withEnd(Integer.valueOf(r.nextInt(vertices)).toString());
+                .withStart(Integer.valueOf(start).toString()).withEnd(Integer.valueOf(end).toString());
     }
 
     private Edges createEdges(int vertices, int edgesNumber) {
