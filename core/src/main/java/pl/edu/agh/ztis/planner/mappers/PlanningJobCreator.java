@@ -7,6 +7,7 @@ import pl.edu.agh.ztis.planner.planners.GraphType;
 import pl.edu.agh.ztis.planner.planners.Planner;
 import pl.edu.agh.ztis.planner.ws.ResponseService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public abstract class PlanningJobCreator<T> {
 
     abstract GraphType graphType();
 
-    private List<Node> filterNodes(List<Object> attributesOrNodesOrEdges) {
+    private List<Node> filterNodes(List<Serializable> attributesOrNodesOrEdges) {
         List<Node> nodes = new ArrayList<>();
         for (Object attributesOrNodesOrEdge : attributesOrNodesOrEdges) {
             if (attributesOrNodesOrEdge instanceof Nodes) {
@@ -34,7 +35,7 @@ public abstract class PlanningJobCreator<T> {
         return nodes;
     }
 
-    private List<Edge> filterEdges(List<Object> attributesOrNodesOrEdges) {
+    private List<Edge> filterEdges(List<Serializable> attributesOrNodesOrEdges) {
         List<Edge> edges = new ArrayList<>();
         for (Object attributesOrNodesOrEdge : attributesOrNodesOrEdges) {
             if (attributesOrNodesOrEdge instanceof Edges) {
