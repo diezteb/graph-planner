@@ -21,10 +21,13 @@ import pl.edu.agh.ztis.planner.ws.PlanningTaskResponse;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import pl.edu.agh.ztis.planner.ws.ResponseStatus;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
+    private static final String OK = "OK";
+    private static final String UNSUPPORTED = "UNSUPPORTED";
 
     @Autowired
     private ServiceInvoker serviceInvoker;
@@ -61,7 +64,8 @@ public class MainController {
                 graphCreator.createGraph(bean.getVertices(), bean.getEdges(), GeneratorType.valueOf(bean.getType())),
                 PlanningAlgorithm.valueOf(bean.getAlgorithm()));
         ModelAndView mav = new ModelAndView("sentToExecute");
-        mav.addObject("message", response);
+        mav.addObject("message", response.getStatus() == ResponseStatus.OK ? OK : UNSUPPORTED);
+        mav.addObject("jobId", response.getJobId());
         return mav;
     }
 }
