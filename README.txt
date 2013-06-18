@@ -6,7 +6,7 @@ Prerequisites:
  - Applicaton requires that Maven /bin directory is in system path environmental variable (if typing "mvn" in console triggers maven then it is ok)
  
 Building:
- - to build application you need to got into main application directory and type:
+ - to build application you need to get into main application directory and type:
 		mvn clean install
  Maven should collect all dependencies and build application
  
