@@ -1,0 +1,57 @@
+\documentclass[pdflatex,11pt]{dokumentacja}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+
+% dodatkowe pakiety
+\usepackage{enumerate}
+\usepackage{listings}
+\lstloadlanguages{TeX}
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
+%---------------------------------------------------------------------------
+
+\author{Paweł Kaczmarczyk, Stanisław Podgórski}
+\shortauthor{P. Kaczmarczyk, S. Podgórski}
+
+\titlePL{Rozproszony system do testowania algorytmów planowania: Serwisy wykonywujące planowanie przy pomocy różnych algorytmów}
+
+\shorttitlePL{Sieciocentryczny model architektury dla potrzeb systemu analizy i wizualizacji danych}
+
+\thesistypePL{Zaawansowane techniki integracji systemów}
+
+\date{2013}
+
+\departmentPL{Katedra Informatyki}
+
+\facultyPL{Wydział Informatyki, Elektroniki i Telekomunikacji}
+
+\setlength{\cftsecnumwidth}{10mm}
+
+%---------------------------------------------------------------------------
+
+\begin{document}
+
+\titlepages
+
+\include{abstract}
+
+\tableofcontents
+
+\listoffigures 
+
+\clearpage
+
+\include{cel}
+\include{wymagania}
+\include{wizja}
+\include{implementacja}
+\include{instrukcja}
+
+\nocite{*}
+
+\bibliographystyle{plain}
+\bibliography{bibliografia}
+
+\end{document}
