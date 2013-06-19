@@ -82,7 +82,7 @@ Rysunek \ref{fig:dfs} przedstawia wynik działania algorytmu przeszukiwania w g�
 
 \subsection{A*}
 \paragraph{}
-Algorytm A* to heurystyczny znajdowania najkrótszej ścieżki w grafie ważonym z dowolnego wierzchołka do wierzchołka spełniającego określony
+Algorytm A* to heurystyczny algorytm znajdowania najkrótszej ścieżki w grafie ważonym z dowolnego wierzchołka do wierzchołka spełniającego określony
 warunek zwany testem celu. 
 Algorytm jest zupełny i optymalny, w tym sensie, że znajduje ścieżkę, jeśli tylko taka istnieje, i przy tym jest to ścieżka najkrótsza. 
 Stosowany głównie w dziedzinie sztucznej inteligencji do rozwiązywania problemów i w grach komputerowych do imitowania inteligentnego zachowania.
@@ -154,35 +154,32 @@ Na rysunku \ref{fig:uniformCost}, przedstawiony został wynik działania algoryt
 \paragraph{}
 \begin{figure}[!h]
  \centering
- \includegraphics{algorithms/dijkstra}
+ \includegraphics{algorithms/uniformCost}
  \caption{Wynik działania algorytmu Dijkstry na przykładowym skierowanym, ważonym grafie}
- \label{fig:dijkstra}
+ \label{fig:uniformCost}
 \end{figure}
 
 
 \subsection{Floyd-Warshall}
 \paragraph{}
-Algorytm Floyda-Warshalla służy do znajdowania najkrótszych ścieżek pomiędzy wszystkimi parami wierzchołków w grafie ważonym.
+Algorytm Floyda-Warshalla służy do znajdowania ścieżek z największym przepływem pomiędzy wszystkimi parami wierzchołków w grafie ważonym.
 Pozwala on na szukanie ścieżek zarówno w grafach z dodatnimi jak i ujemnymi wagami krawędzi, lecz nie mogą wystąpić cykle o ujemnej wadze.
-Algorytm Floyda-Warshalla może być wykorzystany do znajdowania maksymalnego przepływu pomiędzy dwoma wierzchołkami.
+W naszej implementacji wykorzystujemy ten algorytm do wybrania ścieżki pomiędzy wierzchołkiem początkowym i końcowym bazującej na przepływie.
 
 \paragraph{}
 Jak widać na rysunku \ref{fig:floyd}, algorytm Floyda-Warshalla wyznaczył poprawną ścieżkę w zadanym grafie.
 \begin{figure}[!h]
  \centering
  \includegraphics{algorithms/floyd}
- \caption{Wynik działania algorytmu Dijkstry na przykładowym skierowanym, ważonym grafie}
+ \caption{Wynik działania algorytmu Floyda-Warshalla na przykładowym grafie}
  \label{fig:floyd}
 \end{figure}
 
 \subsection{Prim}
 \paragraph{}
-Algorytm Prima oryginalnie służy do wyznaczania minimalnego drzewa rozpinającego (MST), można go jednak zaadopotować również do wyszukiwania
-najkrótszych ścieżek w grafie.
-Wystarczy po znalezieniu minimalnego drzewa rozpoinającego wyszukać w nim ścieżkę pomiędzy interesującymi nas punktami za pomocą innego, szybkiego
-algorytmu.
-Algorytm został wynaleziony w 1930 przez czeskiego matematyka Vojtěcha Jarníka, a następnie odkryty na nowo przez informatyka Roberta C. Prima w 1957
-oraz niezależnie przez Edsgera Dijkstrę w 1959. 
+Algorytm Prima oryginalnie służy do wyznaczania minimalnego drzewa rozpinającego (MST), można go jednak zaadopotować również do wyszukiwania najkrótszych ścieżek w grafie.
+Wystarczy po znalezieniu minimalnego drzewa rozpinającego wyszukać w nim ścieżkę pomiędzy interesującymi nas punktami za pomocą innego, szybkiego algorytmu.
+Algorytm został wynaleziony w 1930 przez czeskiego matematyka Vojtěcha Jarníka, a następnie odkryty na nowo przez informatyka Roberta C. Prima w 1957 oraz niezależnie przez Edsgera Dijkstrę w 1959. 
 Z tego powodu algorytm nazywany jest również czasami algorytmem Dijkstry–Prima, algorytmem DJP, algorytmem Jarníka, albo algorytmem Prima–Jarníka.
 
 \paragraph{}
@@ -197,7 +194,7 @@ Na rysunku \ref{fig:prim}, przedstawiono wynik działania algorytmu Prima.
 
 \subsection{Kruskal}
 \paragraph{}
-Algorytm Kruskala, podobnie jak algorytm Prima, służy do wyznaczania minimalnego drzewa rozpinającego dla grafu nieskierowanego ważonego. 
+Algorytm Kruskala, podobnie jak algorytm Prima, służy do wyznaczania minimalnego drzewa rozpinającego dla grafu nieskierowanego i ważonego. 
 Z wyznaczonego drzewa można następnie wyznaczyć ścieżkę pomiędzy dwoma wierzchołkami.
 Innymi słowy, znajduje drzewo zawierające wszystkie wierzchołki grafu, którego waga jest najmniejsza możliwa. 
 Jest to przykład algorytmu zachłannego.
