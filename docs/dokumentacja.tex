@@ -19,6 +19,17 @@
 \hypersetup{%
     pdfborder = {0 0 0}
 }
+
+\newcommand{\listexamplename}{Spis kodów źródłowych} 
+\newlistof{example}{exp}{\listexamplename}
+
+\newcommand{\example}[1]{% 
+      \refstepcounter{example} 
+      \par\noindent\caption{#1} 
+      \addcontentsline{exp}{example} 
+      {\protect\numberline{\theexample}#1}\par 
+}
+
 %---------------------------------------------------------------------------
 
 \author{Paweł Kaczmarczyk, Stanisław Podgórski}
@@ -47,8 +58,10 @@
 \include{abstract}
 
 \tableofcontents
-
+\newpage
 \listoffigures 
+\newpage
+\listofexample
 
 \clearpage
 
