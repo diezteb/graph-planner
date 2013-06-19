@@ -477,3 +477,69 @@ Czas startowania Mavena nie ma wpływu na zwracany czas działania algorytmu, po
 
 Ponieważ Maven jest konieczny nie tylko do zbudowania aplikacji, ale także do uruchamiania zadań, jest to niezbędny komponent.
 O ile proces budowania jest możliwy do przeprowadzenia ręcznie (chociaż jest to nieporównywalnie bardziej skomplikowane), o tyle uruchomienie obliczeń bez jego użycia wymagałoby dość sporych zmian w implementacji.
+
+\section{Przegląd wykorzystanych technologii}
+
+Do realizacji projektu wykorzystaliśmy dużą liczbę bibliotek udostępniających potrzebne nam funkcjonalnośco oraz frameworków ułatwiających tworzenie aplikacji.
+W tej sekcji postaramy sie krótko przybliżyć wykorzystane technologie i zakres ich zastosowania.
+
+\subsection{Serwis obliczeniowy}
+
+Implementacja serwisu obliczeniowego wymagała zastosowania komponentów umożliwiających komunikację z klientami, uruchamianie obliczeń oraz planowanie za pomocą wybranych algorytmów.
+Serwis obliczeniowy korzysta z kontenera odwrócenego sterowania Spring IoC do zestawienia wszystkich komponentów, z których się składa.
+
+\subsubsection{Komunikacja - przyjmowanie zadań}
+
+\begin{itemize}
+	\item W celu przyjmowania zadań wykorzystujemy SOAP WebService według standardu JAX-WS, korzystając przy tym z implememtacji Apache CXF.
+	\item Grafy, na których wykonujemy obliczenia przesyłane są za pomocą struktury według standardu GEXF.
+	W celu ich przetwarzania wykorzystaliśmy bibliotekę GEXF4j.
+\end{itemize}
+
+\subsubsection{Komunikacja - odsyłanie wyników}
+
+\begin{itemize}
+	\item Wyniki odsyłane są w postaci JSON, a translacja pomiędzy obiektami a JSONem odbywa się za pomocą biblioteki Jackson.
+	\item Przesyłanie wyników do WebService klienta odbywa się przy użyciu Spring RestTemplate.
+\end{itemize}
+
+\subsubsection{Uruchamianie obliczeń}
+
+Uruchamianie obliczeń wykorzystuje narzędzie Maven2.
+
+\subsubsection{Planowanie}
+
+\begin{itemize}
+	\item Mapowanie grafu w postaci GEXF do postaci wymaganej przez wybrany algorytm odbywa się przy użyciu biblioteki Guava.
+	\item Planowanie za pomocą algorytmów Dijkstry i Prima odbywa się przy użyciu biblioteki JUNG.
+	\item Planowanie za pomocą algorytmów Bellmana-Forda, Floyda-Warshalla i Kruskala odbywa się przy użyciu biblioteki JGraphT.
+	\item Planowanie za pomocą algorytmów A*, BFS, DFS, UniformCost oraz GreedyBestFirst odbywa się przy użyciu biblioteki aima-java.
+\end{itemize}
+
+\subsection{Referencyjna implementacja klienta}
+
+Analogicznie jak dla serwisu obliczeniowego, składanie aplikacji klienckiej wykorzystuje kontener Spring IoC.
+
+\subsubsection{Interfejs użytkownika}
+
+Implementacja interfejsu użytkownika została wykonana przy użyciu:
+\begin{itemize}
+	\item Spring MVC - logika biznesowa i obsługa żądań użytkownika.
+	\item jQuery - asynchroniczne pobieranie wyników.
+	\item sigma.js - wizualizacja wyników planowania.
+	\item FreeMarker - widoki oraz formularze.
+\end{itemize}
+
+\subsubsection{Komunikacja - zlecanie zadań}
+
+Zlecanie zadań serwisowi obliczeniowemu wykorzystuje JAX-WS.
+
+\subsubsection{Komunikacja - przyjmowanie zadań}
+
+Przyjmowanie wyników planowania korzysta z biblioteki Jackson do przetworzenia JSONa do potaci obiektowej.
+REST WebService przyjmujący wyniki jest utworzony za pomocą Spring MVC.
+
+\subsubsection{Generacja danych}
+
+Generowanie grafów jako źródeł danych dla serwisu obliczeniowego wykorzystuje bibliotekę JUNG, która udostępnia kilka przykładowych generatorów.
+Poza tym jest też jeden generator zaimplementowany samodzielnie.
