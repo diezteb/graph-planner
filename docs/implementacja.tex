@@ -2,14 +2,43 @@
 
 \section{Architektura}
 
+Diagram \ref{fig:architektura} przedstawia architekturę aplikacji wraz z jej osadzeniem w potencjalnym środowisku uruchomieniowym.
+
+Aplikacja składa się z 3 modułów:
+
+\begin{itemize}
+	\item Systemu udostępniającego zadania do wykonania. 
+	Jego zadaniem jest generowanie, zlecanie oraz prezentowanie uzyskanych wyników planowania.
+	\item Systemu odbierającego zadania planowania i przekazującego żądania do węzłów obliczeniowych.
+	\item Węzła obliczeniowego wykonującego planowanie przy pomocy wybranych algorytmów. 
+	Jego zadaniem jest wykonanie planowania według zadanych parametrów, zebranie informacji związanych z efektywnością (np. czas wykonania, ilość wykorzystywanej pamięci etc.) wybranego algorytmu, oraz zwrócenie wyników do zlecającego klienta.
+\end{itemize}
+
+W ramach konkretyzowania modelu przedstawionego w koncepcji na rysunku \ref{fig:wizja} zdecydowaliśmy się wykorzystać SOAP WebService w celu przyjmowania zadań od klientów.
+Po stronie naszej referencyjnej implementacji klienta zdecydowaliśmy się wykorzystac REST WebService w celu odbierania wyników planowania.
+W sekcji \ref{sec:webservices} przedstawiamy krótką motywację tej decyzji.
+Dodatkowo zdecydowaliśmy się na konkretną reprezentację zadań planowania oraz ich parametrów - postanowiliśmy wykorzystać reprezentację GEXF, a także na reprezentację wyników.
+Obie te reprezenatcje oraz motywację dla tej decyzji przedstawiliśmy w sekcji \ref{sec:data}.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{img/architektura}
+	\caption{Architektura aplikacji.}
+	\label{fig:architektura}
+\end{figure}
+
 \section{Web serwisy}
+\label{sec:webservices}
 \subsection{Web serwis przyjmujący zadania}
 
 \subsection{Web serwis przyjmujący wyniki}
 
 \section{Format danych}
+\label{sec:data}
 
 \subsection{GEXF}
+
+\subsection{JSON}
 
 \section{Algorytmy}
 
