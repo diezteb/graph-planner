@@ -292,3 +292,18 @@ Symbolicznie zostało to przedstawione na rysunku \ref{fig:messageTranslator}
 \end{figure}
 
 \section{Uruchamianie zadań}
+
+Zadania obliczeniowe uruchamiane są asynchronicznie, w osobnych instancjach Wirtualnej Maszyny Java.
+Odbywa się to za pomocą narzędzia Maven, które startuje moduł {\it executor} podając mu jako argument uruchomienia lokalizację tymczasowego pliku z parametrami.
+W związku z tym obliczenia mogą być z powodzeniem wykonywane zdalnie - konieczne jest jedynie wywołanie polecenia
+
+{\it mvn exec:java}
+
+Dla modułu {\it executor} poprzez protokół SSH.
+
+Wykorzystanie Mavena do uruchamiania zadań powoduje pewne narzuty czasowe, które warto mieć na uwadze.
+Start narzędzia oraz przetwarzanie pliku konfiguracyjnego może trwać nawet do kilku sekund i w związku z tym nawet przy przesyłaniu bardzo małego zadania obliczeniowego należy uzbroić się w cierpliwość.
+Czas startowania Mavena nie ma wpływu na zwracany czas działania algorytmu, ponieważ pomiar czasu zaczyna się już po uruchomieniu aplikacji.
+
+Ponieważ Maven jest konieczny nie tylko do zbudowania aplikacji, ale także do uruchamiania zadań, jest to niezbędny komponent.
+O ile proces budowania jest możliwy do przeprowadzenia ręcznie (chociaż jest to nieporównywalnie bardziej skomplikowane), o tyle uruchomienie obliczeń bez jego użycia wymagałoby dość sporych zmian w implementacji.
