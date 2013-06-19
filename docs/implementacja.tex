@@ -33,8 +33,15 @@ Obie te reprezenatcje oraz motywację dla tej decyzji przedstawiliśmy w sekcji 
 \subsection{Web serwis przyjmujący zadania}
 \paragraph{}
 Centralną częścią naszego projektu jest Web Service przyjmujący zadania planowania. 
-Przyjmuje on wiadomości przesyłanie w formacie SOAP. 
-Do jego zaimplementowania wykorzystaliśmy bibliotekę Apache CXF.
+Przyjmuje on wiadomości przesyłanie w formacie {\it SOAP}.
+W wiadomości zawarty jest graf w formacie {\it GEXF}, wybrany algorytm planowania oraz adres Web Service'u przyjmującego wyniki.
+Po odebraniu wiadomości, tworzona jest nowa instancja maszyny wirtualnej Java i następuje na niej wykonanie zleconego zadania.
+Równocześnie odsyłana jest odpowiedź zawierająca potwierdzenie przyjęcia zadania wraz z przydzielonym identyfikatorem zadania.
+Przekazany identyfikator posłuży później do zidentyfikowania odpowiedzi z wykonanym zadaniem planowania.
+Po zakończeniu zadania, odpowiedź zawierająca wykonane zadanie planowania odsyłana jest na wskazany w żądaniu adres.
+
+\paragraph{}
+Do zaimplementowania tego serwisu wykorzystaliśmy bibliotekę Apache CXF.
 Poniżej znajduje się definicja naszego web serwisu:
 
 \begin{program}
@@ -203,14 +210,96 @@ Poniżej znajduje się definicja naszego web serwisu:
 
 \subsection{Web serwis przyjmujący wyniki}
 \paragraph{}
-Web Service przyjmujący wyniki 
+Web Service przyjmujący wyniki jest serwisem typu {\it REST}.
+Oczekuje on na odpowiedzi zawierające wykonane zadanie planowania drogi w grafie.
+Odpowiedź odsyłana jest w formacie {\it JSON}.
+Format ten cechuje się dużą elastycznością i nie jest koniecznie definiowanie schematu takiej odpowiedzi.
+Przykład odpowiedzi w formacie JSON znajduje się w przykładzie \ref{code:jsonresponse}.
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}result\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}
+    \PY{n+nt}{\PYZdq{}path\PYZdq{}}\PY{p}{:} \PY{p}{[}
+        \PY{p}{\PYZob{}}
+            \PY{n+nt}{\PYZdq{}start\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}1\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}end\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}2\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}weight\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{1.0}
+        \PY{p}{\PYZcb{}}\PY{p}{,}
+        \PY{p}{\PYZob{}}
+            \PY{n+nt}{\PYZdq{}start\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}2\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}end\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}5\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}weight\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{1.0}
+        \PY{p}{\PYZcb{}}\PY{p}{,}
+        \PY{p}{\PYZob{}}
+            \PY{n+nt}{\PYZdq{}start\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}5\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}end\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}8\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}weight\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{1.0}
+        \PY{p}{\PYZcb{}}\PY{p}{,}
+        \PY{p}{\PYZob{}}
+            \PY{n+nt}{\PYZdq{}start\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}8\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}end\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}7\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}weight\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{1.0}
+        \PY{p}{\PYZcb{}}\PY{p}{,}
+        \PY{p}{\PYZob{}}
+            \PY{n+nt}{\PYZdq{}start\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}7\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}end\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n+nt}{\PYZdq{}id\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}10\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{n+nt}{\PYZdq{}weight\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{1.0}
+        \PY{p}{\PYZcb{}}
+    \PY{p}{]}
+\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n+nt}{\PYZdq{}statistics\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}
+    \PY{n+nt}{\PYZdq{}statistics\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}
+        \PY{n+nt}{\PYZdq{}EXECUTION\PYZus{}TIME\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{12.0}\PY{p}{,}
+        \PY{n+nt}{\PYZdq{}HEAP\PYZus{}MEMORY\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{672776.0}\PY{p}{,}
+        \PY{n+nt}{\PYZdq{}PATH\PYZus{}LENGTH\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{5.0}
+    \PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n+nt}{\PYZdq{}jobId\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}1559e13c\PYZhy{}8181\PYZhy{}4d8c\PYZhy{}ad2e\PYZhy{}c8c46283a82b\PYZdq{}}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+\end{code}
+\caption{Przykładowa odpowiedź serwisu wykonującego planowanie.}
+\label{code:jsonresponse}
+\end{program}
 
 \section{Format danych}
 \label{sec:data}
 
 \subsection{GEXF}
+\paragraph{}
+{\it GEXF} (Graph Exchange XML Format) to język pozwalający opisać skopmlikowane struktry grafowe, powiązane z nimi dane oraz ich dynamikę.
+Stworzony został w 2007 roku jako część projektu {\it Gephi}.
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}gexf} \PY{n+na}{xmlns=}\PY{l+s}{\PYZdq{}http://www.gexf.net/1.2draft\PYZdq{}} \PY{n+na}{version=}\PY{l+s}{\PYZdq{}1.2\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}meta} \PY{n+na}{lastmodifieddate=}\PY{l+s}{\PYZdq{}2009\PYZhy{}03\PYZhy{}20\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}creator}\PY{n+nt}{\PYZgt{}}Gexf.net\PY{n+nt}{\PYZlt{}/creator\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}description}\PY{n+nt}{\PYZgt{}}A hello world! file\PY{n+nt}{\PYZlt{}/description\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}/meta\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}graph} \PY{n+na}{mode=}\PY{l+s}{\PYZdq{}static\PYZdq{}} \PY{n+na}{defaultedgetype=}\PY{l+s}{\PYZdq{}directed\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}nodes}\PY{n+nt}{\PYZgt{}}
+			\PY{n+nt}{\PYZlt{}node} \PY{n+na}{id=}\PY{l+s}{\PYZdq{}0\PYZdq{}} \PY{n+na}{label=}\PY{l+s}{\PYZdq{}Hello\PYZdq{}} \PY{n+nt}{/\PYZgt{}}
+			\PY{n+nt}{\PYZlt{}node} \PY{n+na}{id=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{label=}\PY{l+s}{\PYZdq{}Word\PYZdq{}} \PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}/nodes\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}edges}\PY{n+nt}{\PYZgt{}}
+			\PY{n+nt}{\PYZlt{}edge} \PY{n+na}{id=}\PY{l+s}{\PYZdq{}0\PYZdq{}} \PY{n+na}{source=}\PY{l+s}{\PYZdq{}0\PYZdq{}} \PY{n+na}{target=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}/edges\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}/graph\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/gexf\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Przykładoway graf w formacie GEXF}
+\end{program}
 
 \subsection{JSON}
+\paragraph{}
+JSON czyli JavaScript Object Notation to lekki format wymiany danych komputerowych. 
+JSON jest formatem tekstowym, będącym podzbiorem języka JavaScript. 
+Typ MIME dla formatu JSON to application/json. 
+Pomimo nazwy JSON jest formatem niezależnym od konkretnego języka. 
+Wiele języków programowania obsługuje ten format danych przez dodatkowe pakiety bądź biblioteki.
+
+
 
 \section{Algorytmy}
 
