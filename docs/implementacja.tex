@@ -211,11 +211,35 @@ Jak widać na rysunku \ref{fig:kruskal}, algorytm Kruskala wyznaczył poprawną 
 
 \section{Metryki}
 
+Przygotowany przez nas serwis udostępnia 3 rodzaje meta-informacji związanych z wykonywaniem zadania planowania:
+\begin{itemize}
+	\item Mierzenie czasu wykonania algorytmu.
+	\item Mierzenie maksymalnego zużycia pamięci.
+	\item Sumaryczną wagę ścieżki.
+\end{itemize}
+
+Metryki te pozwalają ocenić zarówno koszt wykonania obliczeń jak i jakość uzyskanych wyników.
+
 \subsection{Czas wykonania}
+
+W celu mierzenia czasu pracy algorytmu obliczamy różnicę pomiędzy czasem, w którym algorytm został uruchomiony a czasem, w którym się zakończył.
+Nie jest to sposób idealny - nie bierze pod uwagę operacji przełączania kontekstu przez planera systemowego.
+W efekcie może się okazać, że przy dużym obciążeniu węzła obliczeniowego czasy wykonania mogą zostać zafałszowane.
+Nie istnieje jednak uniwersalny - niezależny od systemu operacyjnego - sposób zebrania takich pomiarów.
 
 \subsection{Zużycie pamięci}
 
+W celu pobrania informacji o maksymalnym zużyciu pamięci przez algorytm dokonujemy jego instrumentacji, poprzez uruchomienie wątku agregującego kolejne rozmiary sterty.
+Warto mieć na uwadze, że może to wpłynąć na pomiary czasu wykonania algorytmu.
+Ponieważ Java jest językiem z zarządzaną pamięcią, pozyskane wyniki nie są do końca obiektywne - istnieje szansa, że algorytm mógłby działać z mniejszym rozmiarem sterty niż ten podany przez nasz algorytm.
+Wynika to z faktu, że nie mamy bezpośredniego wpływu na działanie Garbage Collectora.
+W efekcie część obiektów może już nie być potrzebna, ale jednocześnie nie zostać zwolniona.
+Podawaną przez nas informację należy więc traktować jako górne ograniczenie pamięci - algorytm na pewno nie będzie wymagał jej więcej, ale może wymagać znacznie mniej.
+
 \subsection{Waga ścieżki}
+
+W celu oszacowania jakości wybranego algorytmu dokonujemy pomiaru długości / sumarycznej wagi wyznaczonej ścieżki.
+Dzięki temu użytkownik ma możliwość porównać ze sobą wyniki uzyskane dla tego samego grafu, dla różnych algorytmów i stwierdzić, który algorytm daje rozwiązanie lepsze.
 
 \section{Enterprise Integration Patterns}
 W naszym projekcie wykorzystaliśmy cztery różne biblioteki do obliczeń grafowych. 
