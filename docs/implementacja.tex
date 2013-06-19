@@ -20,7 +20,7 @@ W sekcji \ref{sec:webservices} przedstawiamy krótką motywację tej decyzji.
 Dodatkowo zdecydowaliśmy się na konkretną reprezentację zadań planowania oraz ich parametrów - postanowiliśmy wykorzystać reprezentację GEXF, a także na reprezentację wyników.
 Obie te reprezenatcje oraz motywację dla tej decyzji przedstawiliśmy w sekcji \ref{sec:data}.
 
-\begin{figure}[!h]
+\begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{img/architektura}
 	\caption{Architektura aplikacji.}
@@ -29,7 +29,177 @@ Obie te reprezenatcje oraz motywację dla tej decyzji przedstawiliśmy w sekcji 
 
 \section{Web serwisy}
 \label{sec:webservices}
+
 \subsection{Web serwis przyjmujący zadania}
+\paragraph{}
+Centralną częścią naszego projektu jest Web Service przyjmujący zadania planowania. 
+Przyjmuje on wiadomości przesyłanie w formacie SOAP. 
+Do jego zaimplementowania wykorzystaliśmy bibliotekę Apache CXF.
+Poniżej znajduje się definicja naszego web serwisu:
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}wsdl:portType} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}GraphPlanningPortType\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+  \PY{n+nt}{\PYZlt{}wsdl:operation} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}schedule\PYZhy{}planning\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}wsdl:input} \PY{n+na}{message=}\PY{l+s}{\PYZdq{}tns:planning\PYZhy{}task\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}task\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}wsdl:output} \PY{n+na}{message=}\PY{l+s}{\PYZdq{}tns:planning\PYZhy{}task\PYZhy{}response\PYZdq{}} 
+      \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}task\PYZhy{}response\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+  \PY{n+nt}{\PYZlt{}/wsdl:operation\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/wsdl:portType\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{PortType Web Service'u przyjmującego zadania}
+\end{program}
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}wsdl:message} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}task\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}wsdl:part} \PY{n+na}{element=}\PY{l+s}{\PYZdq{}tns:planning\PYZhy{}task\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}parameters\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/wsdl:message\PYZgt{}}
+\PY{n+nt}{\PYZlt{}wsdl:message} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}task\PYZhy{}response\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}wsdl:part} \PY{n+na}{element=}\PY{l+s}{\PYZdq{}tns:planning\PYZhy{}task\PYZhy{}response\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}parameters\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/wsdl:message\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Zapytanie oraz odpowiedź serwisu}
+\end{program}
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}xs:complexType} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}task\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+  \PY{n+nt}{\PYZlt{}xs:sequence}\PY{n+nt}{\PYZgt{}}
+      \PY{n+nt}{\PYZlt{}xs:element} \PY{n+na}{minOccurs=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{maxOccurs=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}graph\PYZdq{}} 
+	\PY{n+na}{type=}\PY{l+s}{\PYZdq{}gexf:gexf\PYZhy{}content\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+      \PY{n+nt}{\PYZlt{}xs:element} \PY{n+na}{minOccurs=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{maxOccurs=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}algorithm\PYZdq{}} 
+	\PY{n+na}{type=}\PY{l+s}{\PYZdq{}tns:planning\PYZhy{}algorithm\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+      \PY{n+nt}{\PYZlt{}xs:element} \PY{n+na}{minOccurs=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{maxOccurs=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}response\PYZhy{}service\PYZdq{}} 
+	\PY{n+na}{type=}\PY{l+s}{\PYZdq{}tns:response\PYZhy{}service\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+  \PY{n+nt}{\PYZlt{}/xs:sequence\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/xs:complexType\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Zadanie planowania}
+\end{program}
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}xs:complexType} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}task\PYZhy{}response\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}xs:sequence}\PY{n+nt}{\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}xs:element} \PY{n+na}{minOccurs=}\PY{l+s}{\PYZdq{}0\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}status\PYZdq{}} \PY{n+na}{type=}\PY{l+s}{\PYZdq{}tns:response\PYZhy{}status\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}xs:element} \PY{n+na}{minOccurs=}\PY{l+s}{\PYZdq{}0\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}job\PYZhy{}id\PYZdq{}} \PY{n+na}{type=}\PY{l+s}{\PYZdq{}xs:string\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+    \PY{n+nt}{\PYZlt{}/xs:sequence\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/xs:complexType\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Odpowiedź serwisu}
+\end{program}
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}xs:simpleType} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}response\PYZhy{}status\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}xs:restriction} \PY{n+na}{base=}\PY{l+s}{\PYZdq{}xs:string\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}OK\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}UNSUPPORTED\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}/xs:restriction\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/xs:simpleType\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Status zadania}
+\end{program}
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}xs:complexType} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}response\PYZhy{}service\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}xs:sequence}\PY{n+nt}{\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:element} \PY{n+na}{minOccurs=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}url\PYZdq{}} \PY{n+na}{type=}\PY{l+s}{\PYZdq{}xs:string\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:element} \PY{n+na}{minOccurs=}\PY{l+s}{\PYZdq{}1\PYZdq{}} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}method\PYZdq{}} \PY{n+na}{type=}\PY{l+s}{\PYZdq{}tns:response\PYZhy{}method\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}/xs:sequence\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/xs:complexType\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Serwis przyjmujący odpowiedzi}
+\end{program}
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}xs:simpleType} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}response\PYZhy{}method\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}xs:restriction} \PY{n+na}{base=}\PY{l+s}{\PYZdq{}xs:string\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}POST\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}/xs:restriction\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/xs:simpleType\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Metoda zwracania odpowiedzi}
+\end{program}
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}xs:simpleType} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}algorithm\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}xs:restriction} \PY{n+na}{base=}\PY{l+s}{\PYZdq{}xs:string\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}AStar\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}BellmanFord\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}BFS\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}DFS\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}Dijkstra\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}FloydWarshall\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}GreedyBestFirst\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}Kruskal\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}Prim\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}xs:enumeration} \PY{n+na}{value=}\PY{l+s}{\PYZdq{}UniformCost\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}/xs:restriction\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/xs:simpleType\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Algorytmy planowania}
+\end{program}
+
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}wsdl:binding} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}GraphPlanningPortTypeSoapBinding\PYZdq{}} 
+	\PY{n+na}{type=}\PY{l+s}{\PYZdq{}tns:GraphPlanningPortType\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}soap:binding} \PY{n+na}{style=}\PY{l+s}{\PYZdq{}document\PYZdq{}} 
+		\PY{n+na}{transport=}\PY{l+s}{\PYZdq{}http://schemas.xmlsoap.org/soap/http\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}wsdl:operation} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}schedule\PYZhy{}planning\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}soap:operation} \PY{n+na}{soapAction=}\PY{l+s}{\PYZdq{}\PYZdq{}} \PY{n+na}{style=}\PY{l+s}{\PYZdq{}document\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}wsdl:input} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}task\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+			\PY{n+nt}{\PYZlt{}soap:body} \PY{n+na}{use=}\PY{l+s}{\PYZdq{}literal\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}/wsdl:input\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}wsdl:output} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}planning\PYZhy{}task\PYZhy{}response\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+			\PY{n+nt}{\PYZlt{}soap:body} \PY{n+na}{use=}\PY{l+s}{\PYZdq{}literal\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}/wsdl:output\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}/wsdl:operation\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/wsdl:binding\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Binding Web Service'u}
+\end{program}
+
+
+
+\begin{program}
+\begin{code}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nt}{\PYZlt{}wsdl:service} \PY{n+na}{name=}\PY{l+s}{\PYZdq{}GraphPlanningPortTypeService\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}wsdl:port} \PY{n+na}{binding=}\PY{l+s}{\PYZdq{}tns:GraphPlanningPortTypeSoapBinding\PYZdq{}}
+\PY{n+na}{name=}\PY{l+s}{\PYZdq{}GraphPlanningServicePort\PYZdq{}}\PY{n+nt}{\PYZgt{}}
+		\PY{n+nt}{\PYZlt{}soap:address} \PY{n+na}{location=}\PY{l+s}{\PYZdq{}http://localhost:9000/planning\PYZdq{}}\PY{n+nt}{/\PYZgt{}}
+	\PY{n+nt}{\PYZlt{}/wsdl:port\PYZgt{}}
+\PY{n+nt}{\PYZlt{}/wsdl:service\PYZgt{}}
+\end{Verbatim}
+\end{code}
+\caption{Implementacja serwisu przyjmującego zadania}
+\end{program}
+
 
 \subsection{Web serwis przyjmujący wyniki}
 

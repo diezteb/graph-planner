@@ -1,12 +1,20 @@
 \documentclass[pdflatex,11pt]{dokumentacja}
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{hyperref}
 
 % dodatkowe pakiety
 \usepackage{enumerate}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{fancyvrb}
+\usepackage{color}
+\usepackage{float}
+
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Kod źródłowy}
+\newenvironment{code}{\selectfont\small}{\par}
+
 \lstloadlanguages{TeX}
 \hypersetup{%
     pdfborder = {0 0 0}
@@ -47,6 +55,7 @@
 \include{cel}
 \include{wymagania}
 \include{wizja}
+\include{xmlstyle}
 \include{implementacja}
 \include{instrukcja}
 
